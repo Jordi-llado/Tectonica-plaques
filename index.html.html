@@ -177,9 +177,17 @@
     <h1>Tectònica de Plaques<br>i Riscos Geològics</h1>
     <p class="subtitle">Dossier autònom · ~2h 30 min · Tres sessions</p>
     <div class="progress-bar-wrap"><div class="progress-bar-fill" id="globalProgress"></div></div>
-    <div class="progress-label" id="progressLabel">0 de 5 blocs completats</div>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:0.6rem;">
+      <div class="progress-label" id="progressLabel">0 de 5 blocs completats</div>
+      <span id="saveIndicator" style="font-size:11px;color:#5DCAA5;opacity:0;transition:opacity 0.5s;">✓ Desat</span>
+    </div>
   </div>
 </header>
+
+<div id="restoreBanner" style="display:none;background:#1A6B5A;color:white;padding:0.6rem 2rem;font-size:13px;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+  <span>🔄 S'han recuperat les respostes de la sessió anterior. <span class="restore-time" style="opacity:0.75;"></span></span>
+  <button onclick="clearState()" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:white;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:12px;font-family:inherit;">Esborrar i tornar a començar</button>
+</div>
 
 <nav class="nav-pills" id="mainNav">
   <a href="#" class="active" data-section="s0" onclick="showSection('s0',this);return false;"><span class="nav-num">1</span> Inici</a>
@@ -847,6 +855,7 @@ function showSection(id, el) {
   if (el) el.classList.add('active');
   completedSections.add(id);
   updateProgress();
+  saveState();
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
@@ -920,6 +929,7 @@ function checkQ(qid, btn, isCorrect) {
     }
   }
   updateFinalScore();
+  saveState();
 }
 
 function updateFinalScore() {
@@ -1003,9 +1013,120 @@ function selectTerritory(name) {
   const el = document.getElementById('terr-' + name);
   if (el) el.classList.add('selected');
   document.getElementById('f_territori').value = name;
+  saveState();
 }
 
-window.addEventListener('load', updateProgress);
+window.addEventListener('load', () => {
+  loadState();
+  updateProgress();
+  // Autoguardat en tots els camps del formulari
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    el.addEventListener('input', saveState);
+    el.addEventListener('change', saveState);
+  });
+});
+
+// ── PERSISTÈNCIA (localStorage) ──────────────────────────────────────────────
+const STORAGE_KEY = 'tectonica_dossier_v1';
+
+function saveState() {
+  try {
+    // Camps del formulari
+    const fields = {};
+    document.querySelectorAll('input[id], textarea[id], select[id]').forEach(el => {
+      fields[el.id] = el.value;
+    });
+    const state = {
+      answered,
+      fields,
+      completedSections: [...completedSections],
+      savedAt: new Date().toISOString()
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    showSaveIndicator();
+  } catch(e) { /* localStorage no disponible */ }
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const state = JSON.parse(raw);
+
+    // Respostes de les preguntes
+    if (state.answered) {
+      Object.assign(answered, state.answered);
+      // Restaura l'estat visual de cada pregunta
+      Object.entries(state.answered).forEach(([qid, data]) => {
+        if (!data.done) return;
+        const qDiv = document.getElementById(qid);
+        if (!qDiv) return;
+        const allBtns = qDiv.querySelectorAll('.q-btn');
+        const fb = document.getElementById(qid + '-fb');
+        allBtns.forEach(b => b.disabled = true);
+        // Marca correcta en verd
+        allBtns.forEach(b => {
+          if (b.onclick && b.onclick.toString().includes(',true)')) b.classList.add('correct');
+        });
+        // Si va encertar, marca el botó correcte (no podem saber quin era sense guardar-ho,
+        // però ja queda marcat en verd per la lògica anterior)
+        if (fb) {
+          fb.className = data.points > 0 ? 'q-feedback show ok' : 'q-feedback show fail';
+          const pts = data.points === 1 ? '' : data.points === 0.5 ? ' (0,5 punts — segon intent)' : '';
+          fb.textContent = data.points > 0 ? '✅ Resposta recuperada de la sessió anterior' + pts : '❌ Resposta recuperada de la sessió anterior — 0 punts';
+        }
+      });
+    }
+
+    // Camps del formulari
+    if (state.fields) {
+      Object.entries(state.fields).forEach(([id, val]) => {
+        const el = document.getElementById(id);
+        if (el) el.value = val;
+      });
+      // Restaura visual del territori seleccionat
+      const terr = state.fields['f_territori'];
+      if (terr) {
+        document.querySelectorAll('.territory-card').forEach(el => el.classList.remove('selected'));
+        const tc = document.getElementById('terr-' + terr);
+        if (tc) tc.classList.add('selected');
+        const ft = document.getElementById('fitxaTitol');
+        if (ft) ft.textContent = terr;
+      }
+    }
+
+    // Seccions visitades
+    if (state.completedSections) {
+      state.completedSections.forEach(s => completedSections.add(s));
+    }
+
+    // Mostra banner de sessió restaurada
+    showRestoreBanner(state.savedAt);
+
+  } catch(e) { /* error de parsing, ignorem */ }
+}
+
+function showSaveIndicator() {
+  let ind = document.getElementById('saveIndicator');
+  if (!ind) return;
+  ind.style.opacity = '1';
+  clearTimeout(ind._timeout);
+  ind._timeout = setTimeout(() => ind.style.opacity = '0', 1500);
+}
+
+function showRestoreBanner(savedAt) {
+  const banner = document.getElementById('restoreBanner');
+  if (!banner) return;
+  const d = savedAt ? new Date(savedAt).toLocaleString('ca-ES') : '';
+  banner.querySelector('.restore-time').textContent = d ? 'Darrera sessió desada: ' + d : '';
+  banner.style.display = 'flex';
+}
+
+function clearState() {
+  if (!confirm('Segur que vols esborrar totes les respostes i tornar a començar?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
 </script>
 
 <!-- PDF GENERATION -->
