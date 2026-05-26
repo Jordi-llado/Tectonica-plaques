@@ -875,22 +875,72 @@ function updateProgress() {
 
 // Feedbacks per a totes les preguntes
 const feedbacks = {
-  q1: ['✅ Correcte! Pangea (del grec "tota la Terra") va existir fa uns 300–200 milions d\'anys. De la seva fragmentació provenen tots els continents actuals.', 'Incorrecte. Gondwana era només el supercontinent del sud (Hemisferi sud). Pangea era el supercontinent total.', 'Incorrecte. Lauràsia era el supercontinent del nord, fruit d\'una primera fragmentació de Pangea, no l\'original.', 'Incorrecte. Rodínia és un supercontinent molt més antic, d\'uns 1.100 milions d\'anys, anterior a Pangea.'],
-  q2: ['Incorrecte. La mesosfera és una capa del mantell inferior, molt rígida. Les plaques no llisquen sobre ella.', 'Incorrecte. El nucli extern és la part líquida del nucli de la Terra: molt profund i sense relació amb el moviment de plaques.', '✅ Correcte! L\'astenosfera és la capa del mantell superior parcialment fosa que actua com a "lubricant" sobre el qual llisquen les plaques.', 'Incorrecte. La litosfera és la capa rígida de la qual formen part les mateixes plaques, no la que hi ha per sota.'],
-  q3: ['✅ Correcte! 2–15 cm per any, comparable a la velocitat de creixement de les ungles. En milions d\'anys és suficient per obrir o tancar oceans sencers.', 'Incorrecte. 10–20 metres per any seria una velocitat catastròfica, incompatible amb l\'existència de vida estable.', 'Incorrecte. 1–2 km per any seria devastador i completament fora de qualsevol mesura geològica real.', 'Incorrecte. Amb 0,1 mm per any l\'Himàlaia no hauria pogut formar-se en cap escala de temps raonable.'],
-  q4: ['Incorrecte. L\'encaix de les costes africana i sud-americana sí que és una evidència clau de la deriva continental.', '✅ Correcte! La diferència de temperatura entre l\'equador i els pols és un fenomen climàtic permanent, no una evidència de la deriva continental.', 'Incorrecte. Els fòssils idèntics en continents separats sí que demostren que estaven units en el passat.', 'Incorrecte. Les restes de glaciació en regions ara tropicals sí que suggereixen que aquells continents van estar a latituds polars.'],
-  q5: ['✅ Correcte! Alfred Wegener, meteoròleg alemany, va publicar la teoria de la deriva continental el 1912. No va ser acceptada fins dècades després de la seva mort.', 'Incorrecte. Charles Darwin va proposar la teoria de l\'evolució el 1859. No estava relacionat amb la tectònica de plaques.', 'Incorrecte. James Hutton és el "pare de la geologia moderna" per les seves idees sobre el temps geològic (1788), però no va proposar la deriva continental.', 'Incorrecte. Harry Hess va proposar l\'expansió del fons oceànic el 1960, com a confirmació de les idees de Wegener, no la deriva continental original.'],
-  q6: ['Incorrecte. El gruix no és el factor determinant. És la densitat la que decideix quina placa s\'enfonsa.', 'Incorrecte. La temperatura influeix en la densitat, però el factor principal és la composició: l\'escorça oceànica és basàltica i intrínsecament més densa.', '✅ Correcte! L\'escorça oceànica és més densa (basalt, ~3,0 g/cm³) que la continental (granit, ~2,7 g/cm³). Per flotabilitat, la més densa s\'enfonsa.', 'Incorrecte. No es comporten igual: en un xoc oceànica-continental, sempre s\'enfonsa l\'oceànica per ser més densa.'],
-  q7: ['Incorrecte. Això descriu la subducció (límit convergent), no l\'expansió del fons oceànic.', 'Incorrecte. El lliscament lateral és el que caracteritza el límit transformant, no l\'expansió del fons oceànic.', 'Incorrecte. Als límits convergents es destrueix escorça per subducció, no es crea nova escorça.', '✅ Correcte! Als límits divergents el magma ascendeix, solidifica i afegeix nova escorça a banda i banda, fent que els dos costats s\'allunyin i l\'oceà s\'eixampli.'],
-  q8: ['✅ Correcte! Als límits transformants les plaques llisquen lateralment acumulant tensió que s\'allibera en terratrèmols intensos, però no hi ha ascens de magma i per tant rarament hi ha volcans.', 'Incorrecte. El límit divergent genera volcans efusius (lava fluïda), no terratrèmols especialment intensos.', 'Incorrecte. El límit convergent per subducció genera tant volcans com terratrèmols molt intensos.', 'Incorrecte. El convergent continental-continental sí que genera terratrèmols, però el límit transformant és el cas més clar de molts terratrèmols i pocs volcans.'],
-  q9: ['Incorrecte. No hi ha subducció sota Islàndia. De fet, és un lloc d\'allunyament de plaques (límit divergent).', 'Incorrecte. Islàndia no es troba sobre cap límit transformant. Està sobre una dorsal oceànica, un límit divergent.', 'Incorrecte. Islàndia es troba sobre la Dorsal Atlàntica Mitjana (límit divergent) i també sobre un punt calent. No és un punt calent aïllat.', '✅ Correcte! La Dorsal Atlàntica Mitjana és un límit divergent que passa per Islàndia, l\'únic punt del planeta on una dorsal oceànica emergeix per sobre del mar.'],
-  q10: ['Incorrecte. La composició no és la raó directa. El problema és que cap placa continental pot enfonsar-se al mantell per generar magma.', '✅ Correcte! Quan dues plaques continentals xoquen, cap pot enfonsar-se (les dues floten per ser poc denses). Sense material al mantell que es fongui, no hi ha magma ni volcans.', 'Incorrecte. La velocitat de col·lisió no és la raó. La clau és que cap placa continental pot enfonsar-se al mantell.', 'Incorrecte. La temperatura de la zona no és el factor determinant. La densitat de les plaques és la clau.'],
-  q11: ['Incorrecte. És a l\'inrevés: l\'hipocentre és a l\'interior i l\'epicentre a la superfície, no al revés.', 'Incorrecte. No són sinònims: fan referència a dos punts físics ben diferenciats, un a l\'interior i l\'altre a la superfície.', 'Incorrecte. Cap dels dos termes mesura res. L\'hipocentre i l\'epicentre designen punts geogràfics, no escales de mesura.', '✅ Correcte! L\'hipocentre (o focus sísmic) és el punt interior on es produeix la ruptura. L\'epicentre és el punt de la superfície directament per sobre, on normalment els danys són majors.'],
-  q12: ['Incorrecte. El doble és molt poc per a una escala logarítmica. Cada grau ja equival a ~31 vegades més energia.', '✅ Correcte! Cada grau de Richter equival a ~31 vegades més energia. Dos graus de diferència: 31 × 31 ≈ 1.000 vegades més energia.', 'Incorrecte. 10 vegades és la diferència en amplitud d\'ona, no en energia alliberada. L\'energia augmenta molt més.', 'Incorrecte. 100 vegades seria aproximadament 1 sol grau de diferència en alguns càlculs. Dos graus suposen ~1.000 vegades.'],
-  q13: ['Incorrecte. La distribució no és uniforme: és clarament concentrada en franges estretes que coincideixen amb els límits de placa.', '✅ Correcte! El mapa del USGS mostra clarament que els terratrèmols es distribueixen en bandes estretes que coincideixen gairebé exactament amb els límits entre les plaques tectòniques.', 'Incorrecte. La majoria d\'activitat sísmica no és a l\'interior dels continents sinó als límits de placa, que sovint segueixen les costes.', 'Incorrecte. Molts terratrèmols es produeixen en zones de subducció costaneres o prop de les costes, molt visibles al mapa del USGS.'],
-  q14: ['Incorrecte. En mar obert els vaixells sí que poden ser afectats per tsunamis molt grans. La perillositat real ve de l\'elevació de l\'ona a la costa.', 'Incorrecte. Els esculls coralers poden dissipar parcialment les ones, però no és la raó principal de l\'elevació del tsunami.', 'Incorrecte. Els tsunamis es generen en aigües profundes, sovint a centenars o milers de km de la costa, no a menys de 50 km.', '✅ Correcte! En mar obert, l\'ona de tsunami té poca alçada però gran longitud d\'ona. En acostar-se a la costa, el fons la frena, l\'energia es comprimeix verticalment i l\'alçada pot arribar a desenes de metres.'],
-  q15: ['Incorrecte. Les Canàries no es troben sobre cap límit de subducció. El seu origen és un punt calent del mantell.', 'Incorrecte. L\'origen dels volcans canaris és un punt calent independent del tipus de límit de la placa africana.', '✅ Correcte! Els punts calents generen magma basàltic, pobre en sílice i molt fluïd: erupcions efusives. Els volcans de subducció assimilen roca rica en sílice i vapor d\'aigua, que fan el magma viscós i les erupcions explosives.', 'Incorrecte. L\'altitud de les illes no té cap influència significativa en el tipus d\'erupció volcànica.'],
+  "q1_0": "✅ Correcte! Pangea va existir fa uns 300–200 milions d'anys. De la seva fragmentació provenen tots els continents actuals.",
+  "q1_1": "Incorrecte. Gondwana era el supercontinent del sud. Pangea era el supercontinent total que incloïa tots els continents.",
+  "q1_2": "Incorrecte. Lauràsia era el supercontinent del nord, fruit d'una primera fragmentació de Pangea.",
+  "q1_3": "Incorrecte. Rodínia és un supercontinent molt més antic (uns 1.100 milions d'anys), anterior a Pangea.",
+  "q2_0": "Incorrecte. La mesosfera és una capa del mantell inferior molt rígida. Les plaques no llisquen sobre ella.",
+  "q2_1": "Incorrecte. El nucli extern és la part líquida del nucli de la Terra, molt profund i sense relació directa amb el moviment de plaques.",
+  "q2_2": "✅ Correcte! L'astenosfera és la capa del mantell superior parcialment fosa que actua com a lubricant sobre el qual llisquen les plaques.",
+  "q2_3": "Incorrecte. La litosfera és la capa rígida de la qual formen part les mateixes plaques, no la que hi ha per sota.",
+  "q3_0": "✅ Correcte! 2-15 cm per any, comparable a la velocitat de creixement de les ungles. En milions d'anys és suficient per obrir o tancar oceans sencers.",
+  "q3_1": "Incorrecte. 10-20 metres per any seria una velocitat catastròfica, incompatible amb l'existència de vida estable a la superfície.",
+  "q3_2": "Incorrecte. 1-2 km per any seria devastador i completament fora de qualsevol mesura geològica real.",
+  "q3_3": "Incorrecte. Amb 0,1 mm per any l'Himàlaia no hauria pogut formar-se en cap escala de temps geològica raonable.",
+  "q4_0": "Incorrecte. L'encaix de les costes africana i sud-americana és una evidència clau de la deriva continental.",
+  "q4_1": "✅ Correcte! La diferència de temperatura entre l'equador i els pols és un fenomen climàtic permanent, no una evidència de la deriva continental.",
+  "q4_2": "Incorrecte. Els fòssils idèntics en continents separats demostren que estaven units en el passat.",
+  "q4_3": "Incorrecte. Les restes de glaciació en regions ara tropicals suggereixen que aquells continents van estar a latituds polars.",
+  "q5_0": "✅ Correcte! Alfred Wegener, meteoròleg alemany, va publicar la teoria de la deriva continental el 1912. No va ser acceptada fins dècades després de la seva mort.",
+  "q5_1": "Incorrecte. Charles Darwin va proposar la teoria de l'evolució el 1859. No estava relacionat amb la tectònica de plaques.",
+  "q5_2": "Incorrecte. James Hutton és el pare de la geologia moderna (1788), però no va proposar la deriva continental.",
+  "q5_3": "Incorrecte. Harry Hess va proposar l'expansió del fons oceànic el 1960, com a confirmació de les idees de Wegener.",
+  "q6_0": "Incorrecte. El gruix no és el factor determinant. És la densitat la que decideix quina placa s'enfonsa.",
+  "q6_1": "Incorrecte. La temperatura influeix en la densitat, però el factor principal és la composició: l'escorça oceànica és basàltica i intrínsecament més densa.",
+  "q6_2": "✅ Correcte! L'escorça oceànica és més densa (basalt, ~3,0 g/cm3) que la continental (granit, ~2,7 g/cm3). Per flotabilitat, la més densa s'enfonsa.",
+  "q6_3": "Incorrecte. En un xoc oceànica-continental, sempre s'enfonsa l'oceànica per ser més densa.",
+  "q7_0": "Incorrecte. Això descriu la subducció (límit convergent), no l'expansió del fons oceànic.",
+  "q7_1": "Incorrecte. El lliscament lateral és el que caracteritza el límit transformant.",
+  "q7_2": "Incorrecte. Als límits convergents es destrueix escorça per subducció, no se'n crea.",
+  "q7_3": "✅ Correcte! Als límits divergents el magma ascendeix, solidifica i afegeix nova escorça a banda i banda, fent que els dos costats s'allunyin i l'oceà s'eixampli.",
+  "q8_0": "✅ Correcte! Als límits transformants les plaques llisquen lateralment acumulant tensió que s'allibera en terratrèmols intensos, però no hi ha ascens de magma i per tant rarament hi ha volcans.",
+  "q8_1": "Incorrecte. El límit divergent genera volcans efusius (lava fluïda), no terratrèmols especialment intensos.",
+  "q8_2": "Incorrecte. El límit convergent per subducció genera tant volcans com terratrèmols molt intensos.",
+  "q8_3": "Incorrecte. El convergent continental-continental sí que genera terratrèmols, però el límit transformant és el cas més clar de molts terratrèmols i pocs volcans.",
+  "q9_0": "Incorrecte. No hi ha subducció sota Islàndia. De fet, és un lloc d'allunyament de plaques (límit divergent).",
+  "q9_1": "Incorrecte. Islàndia no es troba sobre cap límit transformant. Està sobre una dorsal oceànica, un límit divergent.",
+  "q9_2": "Incorrecte. Islàndia es troba sobre la Dorsal Atlàntica Mitjana i també sobre un punt calent. No és un punt calent aïllat sense límit de placa.",
+  "q9_3": "✅ Correcte! La Dorsal Atlàntica Mitjana és un límit divergent que passa per Islàndia, l'únic punt del planeta on una dorsal oceànica emergeix per sobre del mar.",
+  "q10_0": "Incorrecte. La raó no és la composició mineral. El problema és que cap placa continental pot enfonsar-se al mantell per generar magma.",
+  "q10_1": "✅ Correcte! Quan dues plaques continentals xoquen, cap pot enfonsar-se perquè les dues floten per ser poc denses. Sense material al mantell que es fongui, no hi ha magma ni volcans.",
+  "q10_2": "Incorrecte. La velocitat de col·lisió no és la raó. La clau és que cap placa continental pot enfonsar-se al mantell.",
+  "q10_3": "Incorrecte. La temperatura de la zona no és el factor determinant. La densitat de les plaques és la clau.",
+  "q11_0": "Incorrecte. És a l'inrevés: l'hipocentre és a l'interior i l'epicentre a la superfície, no al revés.",
+  "q11_1": "Incorrecte. No són sinònims: fan referència a dos punts físics ben diferenciats, un a l'interior i l'altre a la superfície.",
+  "q11_2": "Incorrecte. Cap dels dos termes mesura res. Hipocentre i epicentre designen punts geogràfics, no escales de mesura.",
+  "q11_3": "✅ Correcte! L'hipocentre és el punt interior on es produeix la ruptura. L'epicentre és el punt de la superfície directament per sobre, on normalment els danys són majors.",
+  "q12_0": "Incorrecte. El doble és molt poc per a una escala logarítmica. Cada grau ja equival a uns 31 vegades més energia.",
+  "q12_1": "✅ Correcte! Cada grau de Richter equival a uns 31 vegades més energia. Dos graus de diferència: 31 x 31 és aproximadament 1.000 vegades més energia.",
+  "q12_2": "Incorrecte. 10 vegades és la diferència en amplitud d'ona, no en energia alliberada.",
+  "q12_3": "Incorrecte. 100 vegades seria aproximadament 1 sol grau de diferència. Dos graus suposen unes 1.000 vegades més.",
+  "q13_0": "Incorrecte. La distribució no és uniforme: és clarament concentrada en franges estretes que coincideixen amb els límits de placa.",
+  "q13_1": "✅ Correcte! El mapa del USGS mostra clarament que els terratrèmols es distribueixen en bandes estretes que coincideixen gairebé exactament amb els límits entre les plaques tectòniques.",
+  "q13_2": "Incorrecte. La majoria d'activitat sísmica no és a l'interior dels continents sinó als límits de placa, que sovint segueixen les costes.",
+  "q13_3": "Incorrecte. Molts terratrèmols es produeixen en zones de subducció costaneres, molt visibles al mapa del USGS.",
+  "q14_0": "Incorrecte. En mar obert els vaixells sí que poden ser afectats per tsunamis molt grans. La perillositat real ve de l'elevació de l'ona a la costa.",
+  "q14_1": "Incorrecte. Els esculls coralers poden dissipar parcialment les ones, però no és la raó principal de l'elevació del tsunami.",
+  "q14_2": "Incorrecte. Els tsunamis es generen en aigües profundes, sovint a centenars o milers de km de la costa.",
+  "q14_3": "✅ Correcte! En mar obert, l'ona de tsunami té poca alçada però gran longitud d'ona. En acostar-se a la costa, el fons la frena, l'energia es comprimeix verticalment i l'alçada pot arribar a desenes de metres.",
+  "q15_0": "Incorrecte. Les Canàries no es troben sobre cap límit de subducció. El seu origen és un punt calent del mantell.",
+  "q15_1": "Incorrecte. L'origen dels volcans canaris és un punt calent independent del tipus de límit de la placa africana.",
+  "q15_2": "✅ Correcte! Els punts calents generen magma basàltic molt fluïd: erupcions efusives. Els volcans de subducció assimilen roca rica en silici i vapor d'aigua que fan el magma viscós i les erupcions explosives.",
+  "q15_3": "Incorrecte. L'altitud de les illes no té cap influència significativa en el tipus d'erupció volcànica."
 };
+
+// Funció d'accés: feedbacks[qid + '_' + idx]
+function getFeedback(qid, idx) { return feedbacks[qid + '_' + idx] || ''; }
+
+
 
 function getCorrectIdx(allBtns) {
   return Array.from(allBtns).findIndex(b => b.onclick && b.onclick.toString().includes(',true)'));
@@ -918,7 +968,7 @@ function checkQ(qid, btn, isCorrect) {
     btn.classList.add('correct');
     fb.className = 'q-feedback show ok';
     const bonus = (state.tries === 2 && isGraded) ? ' (0,5 punts — segon intent)' : '';
-    fb.textContent = (feedbacks[qid]?.[idx] || '') + bonus;
+    fb.textContent = getFeedback(qid, idx) + bonus;
   } else {
     state.wrongIdxs = [...(state.wrongIdxs || []), idx];
     btn.classList.add('wrong');
@@ -930,10 +980,10 @@ function checkQ(qid, btn, isCorrect) {
       // Marca NOMÉS el correcte en verd
       allBtns[state.correctIdx]?.classList.add('correct');
       fb.className = 'q-feedback show fail';
-      fb.textContent = (feedbacks[qid]?.[idx] || '') + (isGraded ? ' — 0 punts.' : '');
+      fb.textContent = getFeedback(qid, idx) + (isGraded ? ' — 0 punts.' : '');
     } else {
       fb.className = 'q-feedback show fail';
-      fb.textContent = (feedbacks[qid]?.[idx] || '') + (isGraded ? ' ⚠️ Torna-ho a intentar (últim intent).' : ' ⚠️ Torna-ho a intentar.');
+      fb.textContent = getFeedback(qid, idx) + (isGraded ? ' ⚠️ Torna-ho a intentar (últim intent).' : ' ⚠️ Torna-ho a intentar.');
     }
   }
   updateFinalScore();
