@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tectònica de Plaques i Riscos Geològics — 4t ESO</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5F0E8; --dark: #1A1A14; --accent: #C4430A; --accent2: #1A6B5A;
+    --muted: #6B6860; --border: #D9D3C5; --card-bg: #FDFAF4;
+    --correct: #1A6B5A; --wrong: #C4430A;
+    --info-bg: #EAF0FF; --info-border: #6080D0;
+    --tip-bg: #EEFAF3; --tip-border: #1A6B5A;
+    --warn-bg: #FFF4E0; --warn-border: #C49010;
+    --quiz-bg: #F5F0FF; --quiz-border: #7B4F9E;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--dark); font-size: 16px; line-height: 1.7; }
+
+  /* HEADER */
+  .site-header { background: var(--dark); color: var(--cream); padding: 2.5rem 2rem 2rem; position: relative; overflow: hidden; }
+  .site-header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,0.015) 40px, rgba(255,255,255,0.015) 80px); }
+  .header-inner { max-width: 860px; margin: 0 auto; position: relative; }
+  .header-tag { display: inline-block; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #A09888; border: 1px solid #3A3A30; padding: 4px 12px; border-radius: 20px; margin-bottom: 1rem; }
+  .site-header h1 { font-family: 'Fraunces', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 600; line-height: 1.15; color: #F5F0E8; margin-bottom: 0.5rem; }
+  .site-header .subtitle { color: #A09888; font-size: 1rem; margin-bottom: 1.5rem; }
+  .progress-bar-wrap { background: #2E2E24; border-radius: 4px; height: 6px; width: 100%; max-width: 400px; }
+  .progress-bar-fill { background: linear-gradient(90deg, var(--accent2), #5DCAA5); height: 100%; border-radius: 4px; width: 0%; transition: width 0.5s ease; }
+  .progress-label { font-size: 12px; color: #A09888; margin-top: 6px; }
+
+  /* NAV */
+  .nav-pills { background: var(--dark); border-bottom: 1px solid #2E2E24; padding: 0 2rem; display: flex; overflow-x: auto; scrollbar-width: none; }
+  .nav-pills::-webkit-scrollbar { display: none; }
+  .nav-pills a { display: flex; align-items: center; gap: 6px; padding: 0.75rem 1rem; font-size: 13px; color: #A09888; text-decoration: none; border-bottom: 2px solid transparent; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }
+  .nav-pills a:hover { color: var(--cream); }
+  .nav-pills a.active { color: var(--cream); border-bottom-color: var(--accent); }
+  .nav-num { background: #2E2E24; color: #A09888; font-size: 10px; font-weight: 500; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+  .main { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  /* SECTIONS */
+  .section { display: none; animation: fadeIn 0.3s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* TYPOGRAPHY */
+  .section-title { font-family: 'Fraunces', serif; font-size: 2rem; font-weight: 600; color: var(--dark); margin-bottom: 0.25rem; line-height: 1.2; }
+  .section-intro { color: var(--muted); font-size: 1rem; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
+  h3 { font-family: 'Fraunces', serif; font-size: 1.25rem; font-weight: 600; color: var(--dark); margin: 2rem 0 0.75rem; }
+  p { margin-bottom: 1rem; }
+  strong { font-weight: 500; }
+  ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+  li { margin-bottom: 0.35rem; }
+
+  /* CARDS */
+  .info-card { background: var(--info-bg); border-left: 3px solid var(--info-border); border-radius: 0 8px 8px 0; padding: 1rem 1.25rem; margin: 1.5rem 0; font-size: 0.95rem; }
+  .info-card .card-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--info-border); font-weight: 500; margin-bottom: 0.4rem; }
+  .tip-card { background: var(--tip-bg); border-left: 3px solid var(--tip-border); border-radius: 0 8px 8px 0; padding: 1rem 1.25rem; margin: 1.5rem 0; font-size: 0.95rem; }
+  .tip-card .card-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--tip-border); font-weight: 500; margin-bottom: 0.4rem; }
+  .warn-card { background: var(--warn-bg); border-left: 3px solid var(--warn-border); border-radius: 0 8px 8px 0; padding: 1rem 1.25rem; margin: 1.5rem 0; font-size: 0.95rem; }
+  .warn-card .card-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--warn-border); font-weight: 500; margin-bottom: 0.4rem; }
+
+  /* VÍDEOS */
+  .video-wrap { background: var(--dark); border-radius: 10px; overflow: hidden; margin: 1.5rem 0; }
+  .video-caption { padding: 0.75rem 1rem; font-size: 13px; color: #A09888; border-top: 1px solid #2E2E24; }
+
+  /* SIMULACIÓ */
+  .sim-card { border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; margin: 1.5rem 0; background: var(--card-bg); }
+  .sim-header { padding: 0.75rem 1rem; background: var(--dark); color: var(--cream); font-size: 13px; display: flex; align-items: center; gap: 8px; }
+  .sim-dot { width: 8px; height: 8px; border-radius: 50%; background: #5DCAA5; }
+  .sim-body { padding: 1rem; }
+  .sim-link { display: inline-flex; align-items: center; gap: 6px; background: var(--dark); color: var(--cream); padding: 10px 20px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 500; transition: background 0.2s; margin-top: 0.5rem; }
+  .sim-link:hover { background: var(--accent); }
+  .sim-link::after { content: '↗'; }
+
+  /* ACTIVITAT DRAG & DROP */
+  .activity-card { border: 1.5px solid var(--quiz-border); border-radius: 10px; margin: 1.5rem 0; overflow: hidden; }
+  .activity-header { background: var(--quiz-border); color: white; padding: 0.7rem 1rem; font-size: 13px; font-weight: 500; letter-spacing: 0.03em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+  .activity-body { padding: 1.25rem; }
+  .drag-area { min-height: 44px; border: 1.5px dashed var(--border); border-radius: 6px; display: flex; flex-wrap: wrap; gap: 6px; padding: 6px; transition: border-color 0.2s, background 0.2s; }
+  .drag-area.over { border-color: var(--accent2); background: var(--tip-bg); }
+  .drag-token { background: var(--dark); color: var(--cream); padding: 5px 12px; border-radius: 20px; font-size: 13px; cursor: grab; user-select: none; transition: background 0.15s; }
+  .drag-token:hover { background: var(--accent2); }
+  .drag-token.placed { background: var(--accent2); }
+  .token-bank { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem; min-height: 44px; border: 1px solid var(--border); border-radius: 8px; padding: 8px; background: white; }
+
+  /* PREGUNTES RÀPIDES */
+  .quick-q { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; margin: 1rem 0; }
+  .quick-q .q-text { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.75rem; }
+  .q-options { display: flex; flex-direction: column; gap: 6px; }
+  .q-btn { background: white; border: 1px solid var(--border); border-radius: 6px; padding: 8px 14px; text-align: left; cursor: pointer; font-size: 0.9rem; font-family: 'DM Sans', sans-serif; color: var(--dark); transition: all 0.15s; }
+  .q-btn:hover:not(:disabled) { border-color: var(--quiz-border); background: var(--quiz-bg); }
+  .q-btn.correct { background: #EEFAF3; border-color: var(--correct); color: var(--correct); font-weight: 500; }
+  .q-btn.wrong { background: #FFF0EC; border-color: var(--wrong); color: var(--wrong); }
+  .q-btn:disabled { cursor: default; }
+  .q-feedback { font-size: 0.88rem; margin-top: 0.5rem; padding: 6px 10px; border-radius: 5px; display: none; }
+  .q-feedback.show { display: block; }
+  .q-feedback.ok { background: #EEFAF3; color: var(--correct); }
+  .q-feedback.fail { background: #FFF0EC; color: var(--wrong); }
+
+  /* MAPA PLAQUES */
+  .map-container { background: var(--dark); border-radius: 10px; padding: 1rem; margin: 1.5rem 0; }
+  #plates-svg { width: 100%; cursor: pointer; }
+  .plate-info { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; margin-top: 1rem; font-size: 0.9rem; }
+  .plate-info h4 { color: var(--accent2); margin-bottom: 0.4rem; font-size: 1rem; }
+
+  /* TAULA */
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+  th { background: var(--dark); color: var(--cream); padding: 8px 12px; text-align: left; font-weight: 500; }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #F8F4EE; }
+
+  /* INFORME INTEGRAT */
+  .informe-section { border: 1.5px solid var(--border); border-radius: 10px; margin: 1.25rem 0; overflow: hidden; background: white; }
+  .informe-section-header { background: var(--dark); color: var(--cream); padding: 0.65rem 1rem; font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+  .informe-section-header .ish-num { background: var(--accent); color: white; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .informe-body { padding: 1.25rem; }
+  .informe-body p.consigna { font-size: 0.88rem; color: var(--muted); margin-bottom: 1rem; font-style: italic; }
+  .informe-field { margin-bottom: 1rem; }
+  .informe-field label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 4px; font-weight: 500; }
+  .informe-field input, .informe-field textarea, .informe-field select {
+    width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; background: var(--cream); color: var(--dark); resize: vertical;
+  }
+  .informe-field input:focus, .informe-field textarea:focus, .informe-field select:focus { outline: none; border-color: var(--accent2); background: white; }
+  .informe-field textarea { min-height: 80px; }
+  .informe-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media(max-width: 600px) { .informe-grid { grid-template-columns: 1fr; } }
+
+  /* NAVEGACIÓ */
+  .nav-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+  .btn-nav { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border-radius: 6px; border: 1.5px solid var(--dark); background: transparent; color: var(--dark); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; text-decoration: none; transition: all 0.15s; }
+  .btn-nav:hover { background: var(--dark); color: var(--cream); }
+  .btn-nav.primary { background: var(--dark); color: var(--cream); }
+  .btn-nav.primary:hover { background: var(--accent); border-color: var(--accent); }
+  .btn-nav:disabled { opacity: 0.3; cursor: default; pointer-events: none; }
+
+  /* BADGE SESSIÓ */
+  .session-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--dark); color: var(--cream); font-size: 11px; padding: 3px 10px; border-radius: 20px; margin-bottom: 1.5rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .session-dot { width: 6px; height: 6px; border-radius: 50%; background: #5DCAA5; }
+
+  /* GLOSSARI */
+  .glossari-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+  @media(max-width: 600px) { .glossari-grid { grid-template-columns: 1fr; } }
+  .glossari-item { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 0.75rem 1rem; }
+  .glossari-item dt { font-weight: 500; color: var(--accent2); font-size: 0.95rem; margin-bottom: 3px; }
+  .glossari-item dd { font-size: 0.88rem; color: var(--muted); }
+
+  /* SCORE */
+  .score-display { text-align: center; padding: 2rem; background: var(--dark); border-radius: 10px; color: var(--cream); margin: 2rem 0; }
+  .score-display .big-score { font-family: 'Fraunces', serif; font-size: 3.5rem; font-weight: 600; line-height: 1; color: #5DCAA5; }
+  .score-display .score-label { color: #A09888; font-size: 0.9rem; margin-top: 0.5rem; }
+
+  /* SELECCIÓ TERRITORI */
+  .territory-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 1rem 0; }
+  .territory-card { cursor: pointer; border: 1.5px solid var(--border); border-radius: 8px; padding: 0.75rem; text-align: center; background: white; transition: all 0.15s; }
+  .territory-card:hover { border-color: var(--accent2); }
+  .territory-card.selected { border-color: var(--accent2); background: var(--tip-bg); }
+  .territory-card .t-emoji { font-size: 1.5rem; margin-bottom: 4px; }
+  .territory-card .t-name { font-weight: 500; font-size: 0.9rem; }
+  .territory-card .t-sub { font-size: 0.75rem; color: var(--muted); }
+
+  @media print {
+    .nav-pills, .nav-bottom, .progress-bar-wrap { display: none; }
+    .section { display: block !important; page-break-before: always; }
+    .section:first-child { page-break-before: auto; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="header-tag">Biologia i Geologia · 4t ESO</div>
+    <h1>Tectònica de Plaques<br>i Riscos Geològics</h1>
+    <p class="subtitle">Dossier autònom · ~2h 30 min · Tres sessions</p>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="globalProgress"></div></div>
+    <div class="progress-label" id="progressLabel">0 de 5 blocs completats</div>
+  </div>
+</header>
+
+<nav class="nav-pills" id="mainNav">
+  <a href="#" class="active" data-section="s0" onclick="showSection('s0',this);return false;"><span class="nav-num">1</span> Inici</a>
+  <a href="#" data-section="s1" onclick="showSection('s1',this);return false;"><span class="nav-num">2</span> Les plaques</a>
+  <a href="#" data-section="s2" onclick="showSection('s2',this);return false;"><span class="nav-num">3</span> Límits</a>
+  <a href="#" data-section="s3" onclick="showSection('s3',this);return false;"><span class="nav-num">4</span> Riscos</a>
+  <a href="#" data-section="s5" onclick="showSection('s5',this);return false;"><span class="nav-num">5</span> Informe</a>
+</nav>
+
+<main class="main">
+
+<!-- ════════════════════════════════════════════
+     SECCIÓ 0 — INICI
+═════════════════════════════════════════════ -->
+<section class="section active" id="s0">
+  <h2 class="section-title">Com funciona aquest dossier?</h2>
+  <p class="section-intro">Llegeix-ho amb atenció abans de començar.</p>
+
+  <p>Durant les properes <strong>dues sessions i mitja</strong> treballaràs dos grans temes: la <strong>tectònica de plaques</strong> i els <strong>riscos geològics</strong>. Estan directament connectats: entendre per què es mouen les plaques és la clau per comprendre per què hi ha terratrèmols, volcans i tsunamis on hi ha.</p>
+
+  <div class="info-card">
+    <div class="card-label">📋 Estructura del dossier</div>
+    <ol>
+      <li><strong>Bloc 2 — Les plaques tectòniques:</strong> explicació + vídeo + mapa interactiu + preguntes</li>
+      <li><strong>Bloc 3 — Tipus de límits:</strong> explicació + simulador PhET + activitat + preguntes</li>
+      <li><strong>Bloc 4 — Riscos geològics:</strong> explicació + vídeos + mapa USGS + preguntes</li>
+      <li><strong>Bloc 5 — Informe del grup:</strong> anàlisi d'un territori real + descàrrega en PDF</li>
+    </ol>
+  </div>
+
+  <div class="tip-card">
+    <div class="card-label">✅ Consell</div>
+    Segueix l'ordre dels blocs: cada un es construeix sobre l'anterior. No passis al bloc 4 sense haver treballat el 2 i el 3.
+  </div>
+
+  <table>
+    <tr><th>Bloc</th><th>Contingut</th><th>Temps aprox.</th></tr>
+    <tr><td>2</td><td>Les plaques tectòniques</td><td>25 min</td></tr>
+    <tr><td>3</td><td>Tipus de límits de placa</td><td>30 min</td></tr>
+    <tr><td>4</td><td>Riscos geològics</td><td>30 min</td></tr>
+    <tr><td>5</td><td>Informe del grup + PDF</td><td>45 min</td></tr>
+  </table>
+
+  <div class="nav-bottom">
+    <button class="btn-nav" disabled>← Anterior</button>
+    <button class="btn-nav primary" onclick="goNext('s1')">Comença → Les plaques</button>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SECCIÓ 1 — LES PLAQUES TECTÒNIQUES
+═════════════════════════════════════════════ -->
+<section class="section" id="s1">
+  <div class="session-badge"><span class="session-dot"></span> Sessió 1</div>
+  <h2 class="section-title">Les plaques tectòniques</h2>
+  <p class="section-intro">Per què la superfície de la Terra es mou i com ho sabem.</p>
+
+  <h3>La Terra no és estàtica</h3>
+  <p>Durant molt de temps, es creia que els continents sempre havien estat on estan ara. El 1912, el meteoròleg Alfred Wegener va proposar una idea revolucionària: els continents <strong>es mouen</strong>. La seva teoria s'anomena <strong>deriva continental</strong>.</p>
+  <p>Avui sabem que la litosfera (l'escorça terrestre més la part superior del mantell) no és una capa contínua: està trencada en grans fragments anomenats <strong>plaques tectòniques</strong>. Aquestes plaques es mouen sobre l'<strong>astenosfera</strong>, una capa del mantell superior parcialment fosa, a raó d'uns <strong>2–15 cm per any</strong> —aproximadament la velocitat a la qual creixen les ungles.</p>
+
+  <div class="info-card">
+    <div class="card-label">💡 Evidències de la deriva continental</div>
+    <ul>
+      <li>L'encaix de les costes de l'Àfrica i Amèrica del Sud</li>
+      <li>Fòssils idèntics trobats en continents avui separats per oceans</li>
+      <li>Restes de glaciació en regions ara tropicals (Índia, Àfrica central)</li>
+      <li>Expansió del fons oceànic confirmada per sismografia i satèl·lit</li>
+    </ul>
+  </div>
+
+  <h3>Vídeo: La deriva continental</h3>
+  <div class="video-wrap">
+    <div style="padding:1.25rem;display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <div style="font-size:2rem;flex-shrink:0;">🎬</div>
+        <div>
+          <div style="color:#F5F0E8;font-weight:500;font-size:0.95rem;margin-bottom:4px;">La deriva continental i la tectònica de plaques</div>
+          <div style="color:#A09888;font-size:0.85rem;margin-bottom:10px;">En català · Explica com es va formar Pangea i per què es mouen les plaques · 5 min aprox.</div>
+          <a href="https://www.youtube.com/watch?v=_yWcDLhz5Ds" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#C4430A;color:white;padding:8px 16px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:500;">▶ Obrir a YouTube</a>
+        </div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <div style="font-size:2rem;flex-shrink:0;">🎬</div>
+        <div>
+          <div style="color:#F5F0E8;font-weight:500;font-size:0.95rem;margin-bottom:4px;">Límits de plaques i riscos geològics (Alex Breru)</div>
+          <div style="color:#A09888;font-size:0.85rem;margin-bottom:10px;">En castellà · Específic per a 4t ESO · Animació dels tres tipus de límits amb exemples reals · 8 min aprox.</div>
+          <a href="https://www.youtube.com/watch?v=hJ8NWzc8w18" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#C4430A;color:white;padding:8px 16px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:500;">▶ Obrir a YouTube</a>
+        </div>
+      </div>
+    </div>
+    <div class="video-caption">▶ Dos vídeos complementaris · Fes clic per obrir-los a YouTube</div>
+  </div>
+
+  <div class="warn-card">
+    <div class="card-label">📝 Mentre veus els vídeos, fixa't en</div>
+    (1) Com es deia el supercontinent original. (2) Per quin mecanisme es mouen les plaques. (3) Quin tipus de límit genera volcans i quin genera serralades.
+  </div>
+
+  <h3>Mapa interactiu de les plaques principals</h3>
+  <p style="font-size:0.9rem;color:var(--muted);">Fes clic sobre qualsevol placa per veure'n informació.</p>
+  <div class="map-container">
+    <svg id="plates-svg" viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg">
+      <rect width="700" height="360" fill="#1A3A5C"/>
+      <polygon points="80,20 250,20 250,80 220,130 180,160 100,160 60,120 50,60" fill="#3B6D11" opacity="0.85" class="plate-zone" data-name="Placa Nordamericana" data-info="Inclou Amèrica del Nord i Groenlàndia. A la costa oest limita amb la placa Pacífica (falla de San Andrés). Es mou ~2 cm/any cap al nord-ouest."/>
+      <polygon points="270,20 550,20 560,100 500,140 420,130 350,110 280,80" fill="#534AB7" opacity="0.85" class="plate-zone" data-name="Placa Euroasiàtica" data-info="Inclou Europa i gairebé tota Àsia. Xoca amb la placa Índica per l'est, formant l'Himàlaia. Limita amb la placa Africana al sud pel sistema de rifts mediterrani."/>
+      <polygon points="270,150 430,130 440,260 380,320 270,310 250,250" fill="#C4430A" opacity="0.85" class="plate-zone" data-name="Placa Africana" data-info="Inclou el continent africà i part de l'oceà Atlàntic. El Rift de l'Àfrica Oriental és un límit divergent actiu que podria separar l'est d'Àfrica en milions d'anys."/>
+      <polygon points="80,170 200,160 210,310 170,340 90,340 70,280" fill="#B5780A" opacity="0.85" class="plate-zone" data-name="Placa Sudamericana" data-info="Inclou Amèrica del Sud. Xoca amb la placa de Nazca a l'est (subducció), creant els Andes i els volcans andins. Limita amb la placa Nordamericana al nord."/>
+      <polygon points="0,30 50,20 55,60 50,160 30,280 0,300" fill="#1A6B5A" opacity="0.85" class="plate-zone" data-name="Placa Pacífica" data-info="La placa oceànica més gran del món. Gairebé tota oceànica (sense continent). Subducciona sota Amèrica i Àsia creant volcans i terratrèmols: és el cor de l'Anell de Foc del Pacífic."/>
+      <polygon points="440,140 560,130 620,180 590,280 500,290 430,270" fill="#7B4F9E" opacity="0.85" class="plate-zone" data-name="Placa Indoaustraliana" data-info="Inclou l'Índia i Austràlia. La part índia va xocar amb Euràsia fa ~50 milions d'anys, formant l'Himàlaia. Encara es mou cap al nord a ~5 cm/any."/>
+      <polygon points="100,345 300,360 500,355 600,340 580,330 430,315 200,320 80,330" fill="#444441" opacity="0.85" class="plate-zone" data-name="Placa Antàrtica" data-info="Envolta el continent antàrtic. Limitada per dorsals oceàniques a gairebé tots els costats, cosa que fa que sigui la que menys avança lateralment."/>
+      <!-- Dorsal Atlàntica Mitjana (límit divergent) -->
+      <polyline points="350,20 340,100 330,200 320,300 315,360" stroke="#FFCC44" stroke-width="2.5" stroke-dasharray="6,4" fill="none" opacity="0.9"/>
+      <!-- Etiquetes -->
+      <text x="140" y="90" fill="#F5F0E8" font-size="11" font-weight="500" opacity="0.9">Nordamericana</text>
+      <text x="385" y="70" fill="#F5F0E8" font-size="11" font-weight="500" opacity="0.9">Euroasiàtica</text>
+      <text x="310" y="240" fill="#F5F0E8" font-size="11" font-weight="500" opacity="0.9">Africana</text>
+      <text x="100" y="260" fill="#F5F0E8" font-size="11" font-weight="500" opacity="0.9">Sudamericana</text>
+      <text x="8" y="160" fill="#F5F0E8" font-size="10" font-weight="500" opacity="0.9" transform="rotate(-75,8,160)">Pacífica</text>
+      <text x="480" y="215" fill="#F5F0E8" font-size="11" font-weight="500" opacity="0.9">Indoaustraliana</text>
+      <text x="295" y="350" fill="#F5F0E8" font-size="11" font-weight="500" opacity="0.9">Antàrtica</text>
+      <!-- Llegenda -->
+      <line x1="555" y1="20" x2="580" y2="20" stroke="#FFCC44" stroke-width="2.5" stroke-dasharray="6,4"/>
+      <text x="585" y="24" fill="#FFCC44" font-size="10">Dorsal (límit divergent)</text>
+      <text x="555" y="38" fill="#A09888" font-size="9">Toca una placa per saber-ne més</text>
+    </svg>
+    <div class="plate-info" id="plateInfo"><h4>Selecciona una placa</h4><p>Fes clic sobre qualsevol color del mapa.</p></div>
+  </div>
+
+  <h3>Preguntes de comprensió</h3>
+
+  <div class="quick-q" id="q1">
+    <p class="q-text">1. Com s'anomena el supercontinent del qual provenen tots els continents actuals?</p>
+    <div class="q-options">
+      <button class="q-btn" onclick="checkQ('q1',this,true)">Pangea</button>
+      <button class="q-btn" onclick="checkQ('q1',this,false)">Gondwana</button>
+      <button class="q-btn" onclick="checkQ('q1',this,false)">Lauràsia</button>
+      <button class="q-btn" onclick="checkQ('q1',this,false)">Rodínia</button>
+    </div>
+    <div class="q-feedback" id="q1-fb"></div>
+  </div>
+
+  <div class="quick-q" id="q2">
+    <p class="q-text">2. Sobre quina capa del mantell llisquen les plaques tectòniques?</p>
+    <div class="q-options">
+      <button class="q-btn" onclick="checkQ('q2',this,false)">La mesosfera</button>
+      <button class="q-btn" onclick="checkQ('q2',this,false)">El nucli extern</button>
+      <button class="q-btn" onclick="checkQ('q2',this,true)">L'astenosfera</button>
+      <button class="q-btn" onclick="checkQ('q2',this,false)">La litosfera inferior</button>
+    </div>
+    <div class="q-feedback" id="q2-fb"></div>
+  </div>
+
+  <div class="quick-q" id="q3">
+    <p class="q-text">3. A quina velocitat aproximada es mouen les plaques tectòniques?</p>
+    <div class="q-options">
+      <button class="q-btn" onclick="checkQ('q3',this,true)">2–15 cm per any</button>
+      <button class="q-btn" onclick="checkQ('q3',this,false)">10–20 metres per any</button>
+      <button class="q-btn" onclick="checkQ('q3',this,false)">1–2 km per any</button>
+      <button class="q-btn" onclick="checkQ('q3',this,false)">0,1 mm per any</button>
+    </div>
+    <div class="q-feedback" id="q3-fb"></div>
+  </div>
+
+  <div class="quick-q" id="q4">
+    <p class="q-text">4. Quina d'aquestes NO és una evidència de la deriva continental?</p>
+    <div class="q-options">
+      <button class="q-btn" onclick="checkQ('q4',this,false)">L'encaix de les costes africana i sud-americana</button>
+      <button class="q-btn" onclick="checkQ('q4',this,true)">La diferència de temperatura entre l'equador i els pols</button>
+      <button class="q-btn" onclick="checkQ('q4',this,false)">Fòssils iguals a continents avui separats per oceans</button>
+      <button class="q-btn" onclick="checkQ('q4',this,false)">Restes de glaciació en regions ara tropicals</button>
+    </div>
+    <div class="q-feedback" id="q4-fb"></div>
+  </div>
+
+  <div class="quick-q" id="q5">
+    <p class="q-text">5. Quin científic va proposar la teoria de la deriva continental, i l'any?</p>
+    <div class="q-options">
+      <button class="q-btn" onclick="checkQ('q5',this,true)">Alfred Wegener, 1912</button>
+      <button class="q-btn" onclick="checkQ('q5',this,false)">Charles Darwin, 1859</button>
+      <button class="q-btn" onclick="checkQ('q5',this,false)">James Hutton, 1788</button>
+      <button class="q-btn" onclick="checkQ('q5',this,false)">Harry Hess, 1960</button>
+    </div>
+    <div class="q-feedback" id="q5-fb"></div>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="btn-nav" onclick="goNext('s0')">← Anterior</button>
+    <button class="btn-nav primary" onclick="goNext('s2')">Continua → Límits de placa</button>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SECCIÓ 2 — LÍMITS DE PLACA
+═════════════════════════════════════════════ -->
+<section class="section" id="s2">
+  <div class="session-badge"><span class="session-dot"></span> Sessió 1–2</div>
+  <h2 class="section-title">Tipus de límits de placa</h2>
+  <p class="section-intro">On es toquen dues plaques és on passa la majoria de l'activitat geològica del planeta.</p>
+
+  <p>Les plaques no es mouen de manera aïllada: s'apropen, s'allunyen o llisquen les unes contra les altres. Aquestes zones de contacte s'anomenen <strong>límits de placa</strong>. N'hi ha tres tipus principals.</p>
+
+  <h3>1. Límits divergents (s'allunyen)</h3>
+  <p>Dues plaques s'allunyen l'una de l'altra. El magma del mantell ascendeix per omplir l'escletxa, creant nova escorça oceànica. Això s'anomena <strong>expansió del fons oceànic</strong> i és el responsable que l'oceà Atlàntic s'eixampli uns 2,5 cm cada any. Les zones d'allunyament formen <strong>dorsals oceàniques</strong>: serralades submarines de milers de quilòmetres.</p>
+  <div class="tip-card">
+    <div class="card-label">📍 Exemple clau</div>
+    <strong>Dorsal Atlàntica Mitjana:</strong> separa la placa Nordamericana de l'Euroasiàtica. Islàndia és l'únic lloc on aquesta dorsal emergeix per sobre el nivell del mar, cosa que la converteix en un cas únic d'activitat volcànica divergent observable a terra.
+  </div>
+
+  <h3>2. Límits convergents (s'apropen)</h3>
+  <p>Dues plaques xoquen. El resultat depèn del tipus d'escorça que porten:</p>
+  <ul>
+    <li><strong>Oceànica + continental:</strong> la placa oceànica, més densa, s'enfonsa sota la continental en un procés anomenat <strong>subducció</strong>. En fondre's genera magma que ascendeix i forma volcans al continent (volcans d'arc continental). Exemple: els volcans dels Andes i la fossa de Xile-Perú.</li>
+    <li><strong>Continental + continental:</strong> cap de les dues pot enfonsar-se (les dues son menys denses). S'engruixen i s'eleven formant grans serralades. Exemple: l'Himàlaia, fruit de la col·lisió de la placa Índica contra l'Euroasiàtica.</li>
+    <li><strong>Oceànica + oceànica:</strong> una de les dues subducciona, creant fosses oceàniques profundes i arcs d'illes volcàniques. Exemple: el Japó i les Filipines.</li>
+  </ul>
+
+  <h3>3. Límits transformants (llisquen)</h3>
+  <p>Dues plaques llisquen lateralment en sentits contraris al llarg d'una <strong>falla de transformació</strong>. No es crea ni es destrueix escorça. Generen terratrèmols molt intensos però poques erupcions volcàniques, perquè no hi ha ascens de magma.</p>
+  <div class="tip-card">
+    <div class="card-label">📍 Exemple clau</div>
+    <strong>Falla de San Andrés</strong> (Califòrnia, EUA): la placa Pacífica llisca cap al nord-west respecte a la placa Nordamericana a uns 5 cm/any. Ha generat terratrèmols devastadors com el de San Francisco de 1906 (M~7,9).
+  </div>
+
+  <h3>Simulador PhET: explora els límits de placa</h3>
+  <div class="sim-card">
+    <div class="sim-header"><span class="sim-dot"></span> PhET Interactive Simulations — Universitat de Colorado Boulder</div>
+    <div class="sim-body">
+      <p style="font-size:0.9rem;margin-bottom:0.75rem;">Explora en temps real com es comporten les plaques als diferents límits. Pots controlar el tipus de plaques (oceànica o continental), la temperatura, el gruix i la velocitat.</p>
+      <div style="background:var(--warn-bg);border-radius:6px;padding:0.75rem 1rem;margin-bottom:0.75rem;font-size:0.85rem;">
+        <strong>Tasques guiades al simulador:</strong>
+        <ol style="margin:0.5rem 0 0 1.2rem;padding:0;">
+          <li>Selecciona <em>oceànica + continental</em>, augmenta la velocitat i observa la <strong>subducció</strong>: on es formen volcans?</li>
+          <li>Canvia a <em>continental + continental</em>: per què no hi ha volcans però sí serralades?</li>
+          <li>Activa la capa de temperatura: com varia sota una zona de subducció?</li>
+          <li>Fixa't en la densitat de les dues escorces: per quina raó la oceànica sempre s'enfonsa?</li>
+        </ol>
+      </div>
+      <a class="sim-link" href="https://phet.colorado.edu/en/simulations/plate-tectonics" target="_blank" rel="noopener">Obrir simulació PhET (HTML5)</a>
+    </div>
+  </div>
+
+  <div class="activity-card">
+    <div class="activity-header">✏️ Activitat — Classifica els límits (arrossega les etiquetes)</div>
+    <div class="activity-body">
+      <p style="font-size:0.9rem;margin-bottom:1rem;">Relaciona cada situació geogràfica real amb el tipus de límit que l'origina. Arrossega les etiquetes fins a la casella corresponent.</p>
+      <table style="margin-bottom:1rem;">
+        <tr><th style="width:50%">Situació geogràfica</th><th>Tipus de límit</th></tr>
+        <tr><td style="font-size:0.88rem;">La serralada de l'Himàlaia</td><td><div class="drag-area" id="da1" ondragover="allowDrop(event)" ondrop="dropToken(event,'da1','Convergent continental')"></div></td></tr>
+        <tr><td style="font-size:0.88rem;">La Dorsal Atlàntica Mitjana</td><td><div class="drag-area" id="da2" ondragover="allowDrop(event)" ondrop="dropToken(event,'da2','Divergent')"></div></td></tr>
+        <tr><td style="font-size:0.88rem;">La falla de San Andrés (Califòrnia)</td><td><div class="drag-area" id="da3" ondragover="allowDrop(event)" ondrop="dropToken(event,'da3','Transformant')"></div></td></tr>
+        <tr><td style="font-size:0.88rem;">Els volcans dels Andes (placa de Nazca sota S. Amèrica)</td><td><div class="drag-area" id="da4" ondragover="allowDrop(event)" ondrop="dropToken(event,'da4','Convergent subducció')"></div></td></tr>
+        <tr><td style="font-size:0.88rem;">Les illes volcàniques del Japó</td><td><div class="drag-area" id="da5" ondragover="allowDrop(event)" ondrop="dropToken(event,'da5','Convergent oceànic')"></div></td></tr>
+      </table>
+      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0.5rem;">Etiquetes — arrossega cada una:</p>
+      <div class="token-bank" id="tokenBank">
+        <div class="drag-token" draggable="true" id="tok1" ondragstart="dragStart(event,'Convergent continental')">Convergent continental</div>
+        <div class="drag-token" draggable="true" id="tok2" ondragstart="dragStart(event,'Divergent')">Divergent</div>
+        <div class="drag-token" draggable="true" id="tok3" ondragstart="dragStart(event,'Transformant')">Transformant</div>
+        <div class="drag-token" draggable="true" id="tok4" ondragstart="dragStart(event,'Convergent subducció')">Convergent subducció</div>
+        <div class="drag-token" draggable="true" id="tok5" ondragstart="dragStart(event,'Convergent oceànic')">Convergent oceànic</div>
+      </div>
+      <button onclick="checkDrag()" style="background:var(--dark);color:var(--cream);border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;margin-top:0.5rem;">Comprova les respostes</button>
+      <div id="dragResult" style="margin-top:0.75rem;font-size:0.9rem;display:none;padding:8px 12px;border-radius:6px;"></div>
+    </div>
+  </div>
+
+  <h3>Preguntes de comprensió</h3>
+
+  <div class="quick-q" id="q6">
+    <p class="q-text">6. Al simulador PhET, quan poses escorça oceànica i continental que xoquen, quina de les dues s'enfonsa? Per quin motiu?</p>
+    <div class="q-options">
+      <button class="q-btn" onclick="checkQ('q6',this,false)">La continental, perquè és més gruixuda</button>
+      <button class="q-btn" onclick="checkQ('q6',this,false)">La continental, perquè és més freda</button>
+      <button class="q-btn" onclick="checkQ('q6',this,true)">L'oceànica, perquè és més densa</button>
+      <button class="q-btn" onclick="checkQ('q6',this,false)">Les dues s'enfonsen per igual</button>
+    </div>
+    <div class="q-feedback" id="q6-fb"></div>
+  </div>
+
+  <div class="quick-q" id="q7">
+    <p class="q-text">7. Quin fenomen s'anomena "expansió del fons oceànic"?</p>
+    <div class="q-options">
+      <button class="q-btn" onclick="checkQ('q7',this,false)">L'enfonsament d'una placa oceànica sota una continental</button>
+      <button class="q-btn" onclick="checkQ('q7',this,false)">El lliscament lateral de dues plaques</button>
+      <button class="q-btn" onclick="checkQ('q7',this,false)">La formació de serralades submarines als límits convergents</button>
+      <button class="q-btn" onclick="checkQ('q7',this,true)">La creació de nova escorça oceànica als límits divergents, que fa que l'oceà s'eixampli</button>
+    </div>
+    <div class="q-feedback" id="q7-fb"></div>
+  </div>
+
+  <div class="quick-q" id="q8">
+    <p class="q-text">8. Quin tipus de límit genera grans terratrèmols però pocs volcans?</p>
+    <div class="q-options">
+      <button class="q-btn" onclick="checkQ('q8',this,true)">Transformant</button>
+      <button class="q-btn" onclick="checkQ('q8',this,false)">Divergent</button>
+      <button class="q-btn" onclick="checkQ('q8',this,false)">Convergent per subducció</button>
+      <button class="q-btn" onclick="checkQ('q8',this,false)">Convergent continental-continental</button>
+    </div>
+    <div class="q-feedback" id="q8-fb"></div>
+  </div>
+
+  <div class="quick-q" id="q9">
+    <p class="q-text">9. Islàndia és visible per sobre del mar perquè es troba sobre...</p>
+    <div class="q-options">
+      <button class="q-btn" onclick="checkQ('q9',this,false)">Una zona de subducció de la placa Euroasiàtica</button>
+      <button class="q-btn" onclick="checkQ('q9',this,false)">Un límit transformant entre dues plaques oceàniques</button>
+      <button class="q-btn" onclick="checkQ('q9',this,false)">Un punt calent únic sense cap límit de placa</button>
+      <button class="q-btn" onclick="checkQ('q9',this,true)">La Dorsal Atlàntica Mitjana, un límit divergent</button>
+    </div>
+    <div class="q-feedback" id="q9-fb"></div>
+  </div>
+
+  <div class="quick-q" id="q10">
+    <p class="q-text">10. Per quina raó la col·lisió de dues plaques continentals no genera volcans?</p>
+    <div class="q-options">
+      <button class="q-btn" onclick="checkQ('q10',this,false)">Perquè les plaques continentals no contenen minerals volcànics</button>
+      <button class="q-btn" onclick="checkQ('q10',this,true)">Perquè cap de les dues plaques s'enfonsa al mantell, i per tant no hi ha fusió de material que generi magma</button>
+      <button class="q-btn" onclick="checkQ('q10',this,false)">Perquè la col·lisió és massa lenta per generar calor</button>
+      <button class="q-btn" onclick="checkQ('q10',this,false)">Perquè les plaques continentals xoquen en zones molt fredes</button>
+    </div>
+    <div class="q-feedback" id="q10-fb"></div>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="btn-nav" onclick="goNext('s1')">← Anterior</button>
+    <button class="btn-nav primary" onclick="goNext('s3')">Continua → Riscos geològics</button>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SECCIÓ 3 — RISCOS GEOLÒGICS
+═════════════════════════════════════════════ -->
+<section class="section" id="s3">
+  <div class="session-badge"><span class="session-dot"></span> Sessió 2</div>
+  <h2 class="section-title">Riscos geològics</h2>
+  <p class="section-intro">Quan la dinàmica interna de la Terra afecta la vida humana.</p>
+
+  <p>Un <strong>risc geològic</strong> és qualsevol fenomen geològic que pot causar danys a persones, béns o ecosistemes. Els principals associats a la tectònica de plaques són els <strong>terratrèmols</strong>, les <strong>erupcions volcàniques</strong> i els <strong>tsunamis</strong>.</p>
+
+  <h3>Terratrèmols (sismes)</h3>
+  <p>Les plaques acumulen tensió als seus límits. Quan la resistència de la roca cedeix de cop, l'energia emmagatzemada s'allibera en forma d'<strong>ones sísmiques</strong> que es propaguen en totes direccions. El punt interior on es produeix la ruptura s'anomena <strong>hipocentre</strong> o focus sísmic. El punt de la superfície directament per sobre s'anomena <strong>epicentre</strong> i sol ser on els danys són majors.</p>
+
+  <div class="info-card">
+    <div class="card-label">📏 Mesurar els terratrèmols</div>
+    <ul>
+      <li><strong>Escala de Richter (magnitud):</strong> mesura l'energia alliberada per l'ona sísmica. És logarítmica: cada grau suposa ~31 vegades més energia que l'anterior. Un M7 allibera ~1.000 vegades més energia que un M5.</li>
+      <li><strong>Escala EMS o MSK (intensitat):</strong> mesura els efectes sobre persones i edificis en un punt concret. No és fixa per a un sisme: varia amb la distància a l'epicentre i les condicions del terreny.</li>
+    </ul>
+  </div>
+
+  <h3>Erupcions volcàniques</h3>
+  <p>El <strong>magma</strong> (roca fosa del mantell) ascendeix a través de fractures de l'escorça i emergeix a la superfície com a <strong>lava</strong>. Les erupcions es classifiquen en:</p>
+  <ul>
+    <li><strong>Efusives:</strong> lava fluida que avança lentament. Menys explosives i més previsibles. Típiques dels límits divergents i punts calents (Hawai, Canàries).</li>
+    <li><strong>Explosives:</strong> expulsió violenta de <strong>piròclasts</strong> (fragments de roca i lava solidificada) i núvols de cendra que poden arribar a la estratosfera. Típiques dels volcans d'arc de subducció (Japó, Andes, Cascades).</li>
+  </ul>
+
+  <div class="warn-card">
+    <div class="card-label">🌊 Tsunamis</div>
+    Un <strong>tsunami</strong> es produeix quan un terratrèmol submarí (o un lliscament de terres submarí) desplaça verticalment una gran massa d'aigua. En mar obert, les ones poden viatjar a més de 800 km/h amb una alçada d'uns pocs decímetres (gairebé imperceptibles), però a prop de la costa es fan més lentes i s'eleven fins a 30 m o més. El 80% dels tsunamis es produeixen a l'Anell de Foc del Pacífic.
+  </div>
+
+  <h3>Vídeos: l'Anell de Foc i els riscos geològics</h3>
+  <div class="video-wrap">
+    <div style="padding:1.25rem;display:flex;flex-direction:column;gap:14px;">
+      <div style="display:flex;align-items:flex-start;gap:12px;">
+        <div style="font-size:2rem;flex-shrink:0;">🎬</div>
+        <div>
+          <div style="color:#F5F0E8;font-weight:500;font-size:0.95rem;margin-bottom:4px;">Límits de plaques i riscos geològics (Alex Breru, 4K)</div>
+          <div style="color:#A09888;font-size:0.85rem;margin-bottom:10px;">En castellà · Inclou l'Anell de Foc, terratrèmols, volcans i tsunamis amb animació de qualitat · 4t ESO</div>
+          <a href="https://www.youtube.com/watch?v=hJ8NWzc8w18" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;background:#C4430A;color:white;padding:8px 16px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:500;">▶ Obrir a YouTube</a>
+        </div>
+      </div>
+    </div>
+    <div class="video-caption">▶ Fes clic per obrir a YouTube · Recorda les preguntes de la secció anterior mentre el veus</div>
+  </div>
+
+  <h3>Mapa en temps real: on es produeixen els terratrèmols?</h3>
+  <div class="sim-card">
+    <div class="sim-header"><span class="sim-dot"></span> Mapa interactiu USGS — Servei Geològic dels Estats Units</div>
+    <div class="sim-body">
+      <p style="font-size:0.9rem;margin-bottom:0.75rem;">El USGS publica en temps real tots els terratrèmols registrats al planeta. Pots filtrar per magnitud i data.</p>
+      <div style="background:var(--warn-bg);border-radius:6px;padding:0.75rem 1rem;margin-bottom:0.75rem;font-size:0.85rem;">
+        <strong>Observa i respon mentalment:</strong> On es concentren els terratrèmols? Coincideix amb els límits de placa del mapa del bloc 2? Quines zones del planeta semblen les més actives?
+      </div>
+      <a class="sim-link" href="https://earthquake.usgs.gov/earthquakes/map/" target="_blank" rel="noopener">Obrir mapa USGS en temps real</a>
+    </div>
+  </div>
+
+  <h3>Mesures de prevenció i reducció del risc</h3>
+  <p>Els riscos geològics no es poden evitar, però sí que es poden mitigar els seus efectes amb una bona planificació:</p>
+  <table>
+    <tr><th>Risc</th><th>Mesures de prevenció i mitigació</th></tr>
+    <tr><td><strong>Terratrèmols</strong></td><td>Construcció antisísmica (fonaments flexibles, estructures que absorbeixen vibracions), codis de construcció estrictes, plans d'evacuació, sistemes d'alerta primerenca basats en ones P (arriben abans que les destructives ones S)</td></tr>
+    <tr><td><strong>Erupcions volcàniques</strong></td><td>Xarxes de vigilància volcànica (sismògrafs, sensors de gasos, GPS), zones d'exclusió, plans d'evacuació preventiva, mapes de risc per fluxos de lava i lahars</td></tr>
+    <tr><td><strong>Tsunamis</strong></td><td>Sistema d'alerta del Pacífic (PTWC) basat en boies oceàniques, sirenes costaneres, mapes d'inundació, educació de la població (regla dels 30-30: si el sisme dura >30 s o et fa caure, vés a un lloc alt)</td></tr>
+  </table>
+
+  <h3>Preguntes de comprensió</h3>
+
+  <div class="quick-q" id="q11">
+    <p class="q-text">11. Quina és la diferència entre "hipocentre" i "epicentre" d'un terratrèmol?</p>
+    <div class="q-options">
+      <button class="q-btn" onclick="checkQ('q11',this,false)">L'hipocentre és a la superfície; l'epicentre, a l'interior</button>
+      <button class="q-btn" onclick="checkQ('q11',this,false)">Són sinònims: tots dos designen el punt d'origen del sisme</button>
+      <button class="q-btn" onclick="checkQ('q11',this,false)">L'hipocentre mesura la magnitud; l'epicentre mesura la intensitat</button>
+      <button class="q-btn" onclick="checkQ('q11',this,true)">L'hipocentre és el punt interior on es produeix la ruptura; l'epicentre és el punt de la superfície directament per sobre</button>
+    </div>
+    <div class="q-feedback" id="q11-fb"></div>
+  </div>
+
+  <div class="quick-q" id="q12">
+    <p class="q-text">12. L'escala de Richter és logarítmica. Quanta energia allibera un sisme de M7 en comparació amb un de M5?</p>
+    <div class="q-options">
+      <button class="q-btn" onclick="checkQ('q12',this,false)">El doble</button>
+      <button class="q-btn" onclick="checkQ('q12',this,true)">Aproximadament 1.000 vegades més</button>
+      <button class="q-btn" onclick="checkQ('q12',this,false)">10 vegades més</button>
+      <button class="q-btn" onclick="checkQ('q12',this,false)">100 vegades més</button>
+    </div>
+    <div class="q-feedback" id="q12-fb"></div>
+  </div>
+
+  <div class="quick-q" id="q13">
+    <p class="q-text">13. En el mapa del USGS, on es concentra la major part dels terratrèmols recents?</p>
+    <div class="q-options">
+      <button class="q-btn" onclick="checkQ('q13',this,false)">Distribuïts uniformement per tot el planeta</button>
+      <button class="q-btn" onclick="checkQ('q13',this,true)">En bandes estretes que coincideixen amb els límits de les plaques tectòniques</button>
+      <button class="q-btn" onclick="checkQ('q13',this,false)">Principalment a l'interior dels continents</button>
+      <button class="q-btn" onclick="checkQ('q13',this,false)">Principalment als oceans, allunyats de qualsevol costa</button>
+    </div>
+    <div class="q-feedback" id="q13-fb"></div>
+  </div>
+
+  <div class="quick-q" id="q14">
+    <p class="q-text">14. Per quin motiu un tsunami no és perillós en mar obert però sí quan arriba a la costa?</p>
+    <div class="q-options">
+      <button class="q-btn" onclick="checkQ('q14',this,false)">Perquè en mar obert les ones van massa ràpid i no afecten els vaixells</button>
+      <button class="q-btn" onclick="checkQ('q14',this,false)">Perquè l'energia de l'ona s'acumula als esculls costaners</button>
+      <button class="q-btn" onclick="checkQ('q14',this,false)">Perquè les ones de tsunami només es generen a menys de 50 km de la costa</button>
+      <button class="q-btn" onclick="checkQ('q14',this,true)">Perquè en mar obert l'alçada de l'ona és mínima; en acostar-se a la costa el fons s'aixeca, l'ona es fa lenta i s'eleva fins a desenes de metres</button>
+    </div>
+    <div class="q-feedback" id="q14-fb"></div>
+  </div>
+
+  <div class="quick-q" id="q15">
+    <p class="q-text">15. Les Illes Canàries presenten volcans efusius i no explosius. Quin és el motiu relacionat amb el tipus d'origen volcànic?</p>
+    <div class="q-options">
+      <button class="q-btn" onclick="checkQ('q15',this,false)">Perquè es troben sobre un límit convergent de subducció, on la lava és molt fluida</button>
+      <button class="q-btn" onclick="checkQ('q15',this,false)">Perquè la placa africana és continental i no genera prou pressió</button>
+      <button class="q-btn" onclick="checkQ('q15',this,true)">Perquè es formen sobre un punt calent del mantell, on el magma és basàltic i fluïd, sense l'excés d'aigua i sílice que fa explosius els volcans de subducció</button>
+      <button class="q-btn" onclick="checkQ('q15',this,false)">Perquè l'altitud de les illes redueix la pressió sobre el magma</button>
+    </div>
+    <div class="q-feedback" id="q15-fb"></div>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="btn-nav" onclick="goNext('s2')">← Anterior</button>
+    <button class="btn-nav primary" onclick="goNext('s5')">Continua → Informe del grup</button>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SECCIÓ 5 — INFORME DEL GRUP
+═════════════════════════════════════════════ -->
+<section class="section" id="s5">
+  <div class="session-badge"><span class="session-dot"></span> Sessió 2–3</div>
+  <h2 class="section-title">Informe del grup: anàlisi d'un territori</h2>
+  <p class="section-intro">Treballeu com a equips de geòlegs assessors. Completeu tots els apartats i descarregueu el PDF per entregar-lo al Drive.</p>
+
+  <div class="info-card">
+    <div class="card-label">👥 Instruccions</div>
+    <p style="margin:0;">En grups de 4–5 persones. Trieu un territori de la llista i completeu tots els apartats de l'informe. Quan acabeu, genereu el PDF i pugeu-lo a la carpeta del Drive compartit de classe.</p>
+  </div>
+
+  <!-- PAS 1: TRIAR TERRITORI -->
+  <div class="informe-section">
+    <div class="informe-section-header"><span class="ish-num">0</span> Identificació del grup</div>
+    <div class="informe-body">
+      <div class="informe-grid">
+        <div class="informe-field"><label>Membres del grup</label><input type="text" id="f_membres" placeholder="Nom i cognoms de tots els membres, separats per comes"/></div>
+        <div class="informe-field"><label>Curs i grup</label><input type="text" id="f_curs" placeholder="Ex: 4t ESO B"/></div>
+      </div>
+      <div class="informe-field">
+        <label>Territori escollit — fes clic per seleccionar-lo</label>
+        <div class="territory-grid" style="margin-top:0.5rem;">
+          <div class="territory-card" onclick="selectTerritory('Japó')" id="terr-Japó"><div class="t-emoji">🗾</div><div class="t-name">Japó</div><div class="t-sub">Anell de Foc</div></div>
+          <div class="territory-card" onclick="selectTerritory('Islàndia')" id="terr-Islàndia"><div class="t-emoji">🏔️</div><div class="t-name">Islàndia</div><div class="t-sub">Dorsal Atlàntica</div></div>
+          <div class="territory-card" onclick="selectTerritory('Xile')" id="terr-Xile"><div class="t-emoji">🌋</div><div class="t-name">Xile</div><div class="t-sub">Andes / subducció</div></div>
+          <div class="territory-card" onclick="selectTerritory('Califòrnia')" id="terr-Califòrnia"><div class="t-emoji">🌉</div><div class="t-name">Califòrnia</div><div class="t-sub">Falla San Andrés</div></div>
+          <div class="territory-card" onclick="selectTerritory('Turquia')" id="terr-Turquia"><div class="t-emoji">🕌</div><div class="t-name">Turquia</div><div class="t-sub">Falla Nord-anatòlica</div></div>
+          <div class="territory-card" onclick="selectTerritory('Illes Canàries')" id="terr-Illes Canàries"><div class="t-emoji">🏝️</div><div class="t-name">Canàries</div><div class="t-sub">Punt calent</div></div>
+        </div>
+      </div>
+      <input type="hidden" id="f_territori" value=""/>
+    </div>
+  </div>
+
+  <!-- PAS 2: PLAQUES I LÍMITS -->
+  <div class="informe-section">
+    <div class="informe-section-header"><span class="ish-num">1</span> Context tectònic del territori</div>
+    <div class="informe-body">
+      <p class="consigna">Aplica el que has après als blocs 2 i 3 per descriure la situació tectònica del vostre territori.</p>
+      <div class="informe-grid">
+        <div class="informe-field"><label>Plaques tectòniques que afecten el territori</label><input type="text" id="f_plaques" placeholder="Ex: placa Euroasiàtica i placa Índica"/></div>
+        <div class="informe-field">
+          <label>Tipus de límit de placa predominant</label>
+          <select id="f_limit">
+            <option value="">— Seleccioneu —</option>
+            <option>Convergent amb subducció (oceànica sota continental)</option>
+            <option>Convergent oceànic-oceànic (arc d'illes)</option>
+            <option>Convergent continental-continental (orogen de col·lisió)</option>
+            <option>Divergent (dorsal oceànica o rift continental)</option>
+            <option>Transformant (falla de transformació)</option>
+            <option>Punt calent (hot spot, independent dels límits)</option>
+            <option>Combinació de diversos tipus</option>
+          </select>
+        </div>
+      </div>
+      <div class="informe-field">
+        <label>Explica per quina raó la posició d'aquest territori sobre les plaques determina la seva activitat geològica</label>
+        <textarea id="f_context" placeholder="Descriu on es troba el territori respecte als límits de placa. Quina placa es mou sobre quina? A quina velocitat aproximada? Quin relleu o estructura geològica ha generat aquest moviment (serralades, fosses, dorsals...)?"></textarea>
+      </div>
+      <div class="informe-field">
+        <label>Com ho has comprovat al simulador PhET? Quina configuració de plaques s'assembla a la del vostre territori?</label>
+        <textarea id="f_phet" placeholder="Descriu quina combinació de plaques vas posar al PhET i quin resultat va mostrar el simulador (volcans, serralades, fossa oceànica...). Correspon al que passa realment al vostre territori?"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAS 3: RISCOS GEOLÒGICS -->
+  <div class="informe-section">
+    <div class="informe-section-header"><span class="ish-num">2</span> Riscos geològics del territori</div>
+    <div class="informe-body">
+      <p class="consigna">Identifica quins riscos geològics afecten el vostre territori i busca un exemple real documentat.</p>
+      <div class="informe-field">
+        <label>Quins tipus de riscos geològics afecten el territori (terratrèmols, volcans, tsunamis)?</label>
+        <textarea id="f_riscos" placeholder="Per a cada risc que identifiqueu, expliqueu per quin motiu tectònic es produeix en aquest territori concret. Ex: 'Hi ha terratrèmols freqüents perquè...'"></textarea>
+      </div>
+      <div class="informe-field">
+        <label>Exemple real: cerca un esdeveniment geològic important (nom, any, magnitud o VEI, conseqüències)</label>
+        <textarea id="f_exemple" placeholder="Busca a internet un terratrèmol, erupció o tsunami real que hagi afectat el vostre territori. Indica: nom de l'esdeveniment, any, magnitud (M) o índex d'explosivitat volcànica (VEI si és un volcà), nombre aproximat de víctimes o danys, i per quin mecanisme tectònic es va produir."></textarea>
+      </div>
+      <div class="informe-field">
+        <label>Has comprovat la distribució dels terratrèmols al mapa del USGS? Coincideix amb allò que esperes del territori?</label>
+        <textarea id="f_usgs" placeholder="Descriu el que has observat al mapa USGS per a la zona del vostre territori: hi ha molts terratrèmols? De quina magnitud? On exactament respecte als límits de placa?"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAS 4: MESURES DE PREVENCIÓ -->
+  <div class="informe-section">
+    <div class="informe-section-header"><span class="ish-num">3</span> Prevenció i gestió del risc</div>
+    <div class="informe-body">
+      <p class="consigna">Analitza com el territori fa front als riscos geològics que l'afecten.</p>
+      <div class="informe-field">
+        <label>Quines mesures de prevenció o mitigació s'apliquen en aquest territori?</label>
+        <textarea id="f_prevencio" placeholder="Indica mesures concretes: sistemes d'alerta primerenca, normatives de construcció antisísmica, plans d'evacuació, vigilància volcànica, educació de la població... Podeu buscar exemples reals del país (ex: el sistema d'alerta de terratrèmols del Japó, el pla d'evacuació de Tenerife, etc.)."></textarea>
+      </div>
+      <div class="informe-field">
+        <label>Creus que les mesures actuals són suficients? Proposeu alguna millora justificada</label>
+        <textarea id="f_millora" placeholder="Raoneu la resposta: Quin és el principal punt feble de la prevenció actual? Quina mesura addicional proposaríeu i per quin motiu? Tingueu en compte tant l'eficàcia tècnica com la viabilitat econòmica."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAS 5: VALORACIÓ FINAL -->
+  <div class="informe-section">
+    <div class="informe-section-header"><span class="ish-num">4</span> Valoració final del risc geològic</div>
+    <div class="informe-body">
+      <p class="consigna">Integreu tot el que heu après per emetre un judici fonamentat sobre el risc global del territori.</p>
+      <div class="informe-grid">
+        <div class="informe-field">
+          <label>Nivell de risc geològic global del territori</label>
+          <select id="f_nivell">
+            <option value="">— Seleccioneu —</option>
+            <option>Baix</option>
+            <option>Mitjà</option>
+            <option>Alt</option>
+            <option>Molt alt</option>
+          </select>
+        </div>
+        <div class="informe-field">
+          <label>Comparació amb un altre territori del dossier</label>
+          <input type="text" id="f_comparacio" placeholder="Ex: el nostre territori té un risc similar al Japó perquè..."/>
+        </div>
+      </div>
+      <div class="informe-field">
+        <label>Justificació de la valoració (argumenta a partir de les plaques, els riscos i les mesures de prevenció)</label>
+        <textarea id="f_justificacio" placeholder="Redacteu 4-6 frases que expliquin per quin motiu assigneu aquest nivell de risc. Tingueu en compte: la intensitat i freqüència dels riscos, la densitat de població exposada, la capacitat de prevenció del país, i si el risc ha augmentat o disminuït amb el temps."></textarea>
+      </div>
+      <div class="informe-field">
+        <label>Conclusió del grup: què és el més important que heu après sobre aquest territori?</label>
+        <textarea id="f_conclusio" placeholder="En 2-3 frases, resumiu el descobriment més rellevant de la vostra recerca. Pot ser un fet que us hagi sorprès, una connexió entre la tectònica i el risc que no esperàveu, o una mesura de prevenció que trobeu especialment intel·ligent."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- GLOSSARI -->
+  <h3>Glossari de referència</h3>
+  <div class="glossari-grid">
+    <div class="glossari-item"><dt>Placa tectònica</dt><dd>Fragment rígid de la litosfera que es mou sobre l'astenosfera.</dd></div>
+    <div class="glossari-item"><dt>Subducció</dt><dd>Enfonsament d'una placa (generalment oceànica) sota una altra al mantell.</dd></div>
+    <div class="glossari-item"><dt>Dorsal oceànica</dt><dd>Serralada submarina on es crea nova escorça en límits divergents.</dd></div>
+    <div class="glossari-item"><dt>Hipocentre / epicentre</dt><dd>Hipocentre: punt interior d'origen del sisme. Epicentre: punt de la superfície just per sobre.</dd></div>
+    <div class="glossari-item"><dt>Escala de Richter</dt><dd>Escala logarítmica que mesura la magnitud (energia) d'un sisme.</dd></div>
+    <div class="glossari-item"><dt>Piròclasts</dt><dd>Fragments sòlids de roca i lava expulsats en erupcions volcàniques explosives.</dd></div>
+    <div class="glossari-item"><dt>Punt calent (hot spot)</dt><dd>Zona del mantell d'activitat volcànica independent dels límits de placa (ex: Hawai, Canàries).</dd></div>
+    <div class="glossari-item"><dt>Anell de Foc</dt><dd>Franja circumdant del Pacífic d'elevada activitat sísmica i volcànica, coincident amb els límits de la placa Pacífica.</dd></div>
+  </div>
+
+  <!-- PUNTUACIÓ -->
+  <h3>Puntuació del dossier</h3>
+  <div class="score-display">
+    <div class="big-score" id="finalScore">—</div>
+    <div class="score-label" id="finalScoreLabel">Completa les preguntes dels blocs anteriors per veure la puntuació</div>
+    <div id="scoreDetail" style="margin-top:0.5rem;font-size:12px;color:#808075;"></div>
+    <div style="margin-top:0.75rem;font-size:12px;color:#606055;">15 preguntes avaluades (tots els blocs) · 1 punt al 1r intent · 0,5 al 2n intent · 0 si no es contesta · Nota final = (punts/15)×10</div>
+  </div>
+
+  <!-- INSTRUCCIONS ENTREGA -->
+  <div style="background:var(--dark);color:var(--cream);border-radius:10px;padding:1.5rem;margin:2rem 0;">
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:#A09888;margin-bottom:0.75rem;">📤 Com entregar l'informe</div>
+    <ol style="padding-left:1.5rem;color:#D9D3C5;font-size:0.9rem;line-height:1.9;">
+      <li>Comproveu que tots els apartats de l'informe estan completats.</li>
+      <li>Feu clic al botó <strong style="color:#5DCAA5;">Generar PDF</strong> aquí sota.</li>
+      <li>Pengeu el PDF a la carpeta del vostre grup al <strong style="color:#5DCAA5;">Google Drive compartit de classe</strong>.</li>
+    </ol>
+  </div>
+
+  <div class="nav-bottom">
+    <button class="btn-nav" onclick="goNext('s3')">← Anterior</button>
+    <button class="btn-nav primary" onclick="generatePDF()" id="pdfBtn">📄 Generar PDF de l'informe</button>
+  </div>
+</section>
+
+</main>
+
+<!-- ════ SCRIPTS ════ -->
+<script>
+const sections = ['s0','s1','s2','s3','s5'];
+let completedSections = new Set(['s0']);
+
+// Totes les preguntes avaluades (q1..q15): punts sobre 15, convertits a nota sobre 10
+// q1–q15 totes compten: suma sobre 15, nota final = (pts/15)*10
+const GRADED_QS = ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15'];
+const TOTAL_GRADED = GRADED_QS.length; // 15
+
+// answered[qid] = { tries: 0|1|2, points: 0|0.5|1, done: bool }
+let answered = {};
+
+function getGradedScore() {
+  // Suma els punts de les preguntes avaluades (no contestades = 0)
+  return GRADED_QS.reduce((sum, qid) => sum + (answered[qid]?.points || 0), 0);
+}
+function getGradedNote10() {
+  // Nota sobre 10: (suma punts / total preguntes) * 10
+  return Math.round(getGradedScore() / TOTAL_GRADED * 10 * 10) / 10;
+}
+
+function showSection(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-pills a').forEach(a => a.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (el) el.classList.add('active');
+  completedSections.add(id);
+  updateProgress();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function goNext(id) {
+  const el = document.querySelector('[data-section="' + id + '"]');
+  showSection(id, el);
+}
+
+function updateProgress() {
+  const pct = Math.round((completedSections.size / sections.length) * 100);
+  document.getElementById('globalProgress').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = completedSections.size + ' de ' + sections.length + ' blocs visitats';
+  updateFinalScore();
+}
+
+// Feedbacks per a totes les preguntes
+const feedbacks = {
+  q1: ['Gondwana era el supercontinent del sud (Hemisferi sud). Pangea era el nom del supercontinent total.', '✅ Correcte! Pangea (del grec "tota la Terra") va existir fa uns 300–200 milions d\'anys. De la seva fragmentació provenen tots els continents actuals.', 'Lauràsia era el supercontinent del nord (Hemisferi nord) resultat d\'una primera fragmentació de Pangea.', 'Rodínia és un supercontinent molt més antic, d\'uns 1.100 milions d\'anys.'],
+  q2: ['La mesosfera és una capa del mantell inferior, molt rígida. Les plaques no llisquen sobre ella.', 'El nucli extern és la part líquida del nucli de la Terra: és molt profund i no té relació directa amb el moviment de plaques.', '✅ Correcte! L\'astenosfera és la capa del mantell superior parcialment fosa que actua com a "lubricant" sobre el qual llisquen les plaques.', 'La litosfera és la capa rígida de la qual formen part les mateixes plaques, no la que hi ha per sota.'],
+  q3: ['Massa ràpid! En un any, les plaques no avancen metres.', '✅ Correcte! 2–15 cm per any, comparable a la velocitat de creixement de les ungles. En milions d\'anys, però, és suficient per tancar o obrir oceans sencers.', 'Massa ràpid! 1–2 km per any seria devastador.', 'Massa lent. Amb 0,1 mm per any l\'Himàlaia no hauria pogut formar-se.'],
+  q4: ['Incorrecte. L\'encaix de les costes sí que és una evidència clau de la deriva continental.', 'Incorrecte. Els fòssils idèntics a continents separats sí que demostren que estaven units.', '✅ Correcte! La diferència de temperatura entre l\'equador i els pols és un fenomen climàtic, no una evidència de la deriva continental.', 'Incorrecte. Les restes de glaciació a zones tropicals sí que suggereixen que aquells continents van estar a latituds polars.'],
+  q5: ['Charles Darwin va proposar la teoria de l\'evolució el 1859. No estava relacionat amb la tectònica.', 'James Hutton és el "pare de la geologia moderna" per les seves idees sobre el temps geològic (1788). No va proposar la deriva continental.', '✅ Correcte! Alfred Wegener, meteoròleg alemany, va publicar la teoria de la deriva continental el 1912. No va ser acceptada fins dècades després de la seva mort.', 'Harry Hess va proposar l\'expansió del fons oceànic el 1960, com a confirmació i extensió de les idees de Wegener.'],
+  q6: ['Incorrecte. El gruix no és el factor determinant per saber quina placa s\'enfonsa.', '✅ Correcte! L\'escorça oceànica és més densa (basalt, ~3,0 g/cm³) que la continental (granit, ~2,7 g/cm³). Per flotabilitat, la més densa s\'enfonsa.', 'La temperatura influeix en la densitat, però el factor principal és la composició: l\'oceànica és basàltica i per tant intrínsecament més densa.', 'No es comporten igual: sempre és l\'oceànica la que subducciona en un xoc oceànica-continental.'],
+  q7: ['Això descriu la subducció (límit convergent), no l\'expansió del fons oceànic.', 'El lliscament lateral és el límit transformant.', '✅ Correcte! Als límits divergents el magma ascendeix, solidifica i afegeix nova escorça a banda i banda, fent que els dos costats s\'allunyin progressivament.', 'Als límits convergents es destrueix escorça, no es crea.'],
+  q8: ['El límit divergent genera volcans (efusius), no terratrèmols especialment intensos.', 'El límit convergent per subducció genera tant volcans com terratrèmols molt intensos.', '✅ Correcte! Als límits transformants les plaques llisquen l\'una contra l\'altra acumulant tensió que s\'allibera en forma de terratrèmols, però no hi ha magma que ascendeixi, per tant rarament hi ha volcans.', 'El convergent continental-continental no genera volcans, però sí terratrèmols. El límit transformant, però, és el cas on la diferència entre molts terratrèmols i pocs volcans és més clara.'],
+  q9: ['✅ Correcte! La Dorsal Atlàntica Mitjana és un límit divergent que passa per Islàndia, l\'únic punt del planeta on una dorsal oceànica emergeix per sobre del mar. Per això Islàndia té tanta activitat volcànica i geotèrmica.', 'No hi ha subducció sota Islàndia. De fet, és un lloc d\'allunyament de plaques (límit divergent).', 'No és un límit transformant.', 'Islàndia es troba sobre la dorsal Atlàntica i també sobre un punt calent, una combinació inusual que explica el seu gran volum volcànic.'],
+  q10: ['La composició és parcial: el factor és la densitat i la capacitat de fondre\'s.', 'La velocitat sí que influeix en l\'acumulació de tensió, però no és la raó per la qual no hi ha volcans.', '✅ Correcte! Quan dues plaques continentals xoquen, cap pot enfonsar-se al mantell (les dues floten perquè són poc denses). Sense material que baixi al mantell i es fongui, no hi ha generació de magma ni, per tant, volcans.', 'La temperatura del xoc no és el factor determinant.'],
+  q11: ['Incorrecte: és a l\'inrevés.', '✅ Correcte! L\'hipocentre (o focus sísmic) és el punt interior on es produeix la ruptura de la roca i s\'origina l\'energia sísmica. L\'epicentre és el punt de la superfície directament per sobre, on normalment els danys son majors.', 'No són sinònims: fan referència a punts físics ben diferenciats.', 'Confusió amb les escales de mesura: cap d\'ells mesura magnitud ni intensitat.'],
+  q12: ['Molt poc per a una escala logarítmica.', 'Incorrecte. Cada grau de Richter equival a ~31 vegades més energia. Dos graus de diferència: 31 × 31 ≈ 1.000.', 'Incorrecte per la mateixa raó: 10 vegades és la diferència en amplitud d\'ona, no en energia.', '✅ Correcte! 31^2 ≈ 1.000. Dos graus a l\'escala de Richter suposen aproximadament 1.000 vegades més energia alliberada.'],
+  q13: ['Incorrecte. La distribució és molt heterogènia: clarament concentrada en franges.', 'Incorrecte. La majoria d\'activitat sísmica és als límits de placa, que sovint coincideixen amb zones costaneres o oceàniques.', '✅ Correcte! El mapa del USGS mostra clarament que els terratrèmols es distribueixen en bandes estretes que corresponen gairebé exactament als límits entre les plaques tectòniques.', 'Incorrecte. Molts terratrèmols es produeixen en zones de subducció costaneres o prop de les costes.'],
+  q14: ['En mar obert els vaixells sí que poden ser afectats per tsunamis molt grans.', '✅ Correcte! En mar obert, l\'ona de tsunami té una longitud d\'ona enorme (centenars de km) però molt poca alçada. En acostar-se a la costa, el fons marí frena l\'ona, l\'energia es comprimeix verticalment i l\'alçada pot multiplicar-se per 10 o més.', 'Els esculls coralers poden dissipar parcialment les ones però no és la raó principal del fenomen.', 'Incorrecte: els tsunamis es generen en aigües profundes, sovint a centenars o milers de km de la costa.'],
+  q15: ['Incorrecte: les Canàries no es troben sobre un límit de subducció.', 'Incorrecte: l\'origen dels volcans de les Canàries és un punt calent, no un límit convergent.', '✅ Correcte! Els punts calents generen magma basàltic, pobre en sílice i ric en ferro i magnesi, molt fluïd. Els volcans de subducció, en canvi, assimilen roca continental rica en sílice i vapor d\'aigua, que fan el magma molt viscós i les erupcions explosives (ex: Pinatubo, Krakatoa).', 'L\'altitud no té una influència significativa en el tipus d\'erupció.']
+};
+
+function checkQ(qid, btn, isCorrect) {
+  if (!answered[qid]) answered[qid] = { tries: 0, points: 0, done: false };
+  const state = answered[qid];
+  if (state.done) return;
+
+  state.tries++;
+  const allBtns = btn.parentElement.querySelectorAll('.q-btn');
+  const idx = Array.from(allBtns).indexOf(btn);
+  const fb = document.getElementById(qid + '-fb');
+  const isGraded = GRADED_QS.includes(qid);
+
+  if (isCorrect) {
+    // Encert
+    state.points = (state.tries === 1) ? 1 : 0.5;
+    state.done = true;
+    allBtns.forEach(b => b.disabled = true);
+    btn.classList.add('correct');
+    fb.className = 'q-feedback show ok';
+    const bonus = (state.tries === 2 && isGraded) ? ' (0,5 punts — segon intent)' : '';
+    fb.textContent = (feedbacks[qid]?.[idx] || '') + bonus;
+  } else {
+    // Error
+    btn.classList.add('wrong');
+    btn.disabled = true;
+    if (state.tries >= 2) {
+      // Segon error: bloqueig total, mostra la correcta
+      state.done = true;
+      state.points = 0;
+      allBtns.forEach(b => b.disabled = true);
+      allBtns.forEach(b => { if (b.onclick && b.onclick.toString().includes(',true)')) b.classList.add('correct'); });
+      fb.className = 'q-feedback show fail';
+      fb.textContent = (feedbacks[qid]?.[idx] || '') + (isGraded ? ' — 0 punts.' : '');
+    } else {
+      // Primer error: pot tornar a intentar-ho
+      fb.className = 'q-feedback show fail';
+      fb.textContent = (feedbacks[qid]?.[idx] || '') + (isGraded ? ' ⚠️ Torna-ho a intentar (últim intent).' : ' ⚠️ Torna-ho a intentar.');
+    }
+  }
+  updateFinalScore();
+}
+
+function updateFinalScore() {
+  const el = document.getElementById('finalScore');
+  const lbl = document.getElementById('finalScoreLabel');
+  const detail = document.getElementById('scoreDetail');
+  if (!el) return;
+
+  const doneCount = GRADED_QS.filter(q => answered[q]?.done).length;
+  const nota = getGradedNote10();
+  const pts = getGradedScore();
+
+  if (doneCount === 0) {
+    el.textContent = '—';
+    lbl.textContent = 'Contesta les preguntes de tots els blocs per veure la nota';
+    if (detail) detail.textContent = '';
+    return;
+  }
+
+  el.textContent = nota.toFixed(1).replace('.', ',') + ' / 10';
+  const pct = nota * 10;
+  lbl.textContent = nota >= 8 ? '🎉 Excel·lent domini del temari!' : nota >= 6 ? '👍 Bona feina. Repassa els errors.' : '📖 Repassa el dossier i torna a provar-ho.';
+  if (detail) {
+    const pending = TOTAL_GRADED - doneCount;
+    detail.textContent = pts.toFixed(1).replace('.', ',') + ' punts de ' + TOTAL_GRADED + ' possibles' +
+      (pending > 0 ? ' · Encara falten ' + pending + ' pregunta' + (pending > 1 ? 'es' : '') + ' per respondre' : ' · Totes les preguntes contestades');
+  }
+}
+
+// Mapa interactiu
+document.querySelectorAll('.plate-zone').forEach(el => {
+  el.addEventListener('click', function () {
+    document.getElementById('plateInfo').innerHTML = '<h4>' + this.dataset.name + '</h4><p style="font-size:0.9rem;margin:0;">' + this.dataset.info + '</p>';
+    document.querySelectorAll('.plate-zone').forEach(p => p.style.opacity = '0.55');
+    this.style.opacity = '1';
+  });
+});
+
+// Drag & Drop
+let dragTokenId = '';
+function dragStart(event, value) { dragTokenId = event.target.id; event.dataTransfer.setData('text/plain', value); }
+function allowDrop(event) {
+  event.preventDefault();
+  event.currentTarget.classList.add('over');
+  event.currentTarget.addEventListener('dragleave', () => event.currentTarget.classList.remove('over'), { once: true });
+}
+function dropToken(event, areaId, correctValue) {
+  event.preventDefault();
+  event.currentTarget.classList.remove('over');
+  const area = document.getElementById(areaId);
+  if (area.children.length > 0) {
+    document.getElementById('tokenBank').appendChild(area.children[0]);
+    area.children[0] && area.children[0].classList.remove('placed');
+  }
+  const tok = document.getElementById(dragTokenId);
+  tok.classList.add('placed');
+  area.appendChild(tok);
+}
+function checkDrag() {
+  const correct = { da1: 'Convergent continental', da2: 'Divergent', da3: 'Transformant', da4: 'Convergent subducció', da5: 'Convergent oceànic' };
+  let ok = 0;
+  Object.entries(correct).forEach(([id, val]) => {
+    const area = document.getElementById(id);
+    if (area.children.length > 0 && area.children[0].textContent.trim() === val) ok++;
+  });
+  const total = Object.keys(correct).length;
+  const res = document.getElementById('dragResult');
+  res.style.display = 'block';
+  if (ok === total) {
+    res.style.cssText = 'color:var(--correct);background:#EEFAF3;padding:8px 12px;border-radius:6px;';
+    res.textContent = '✅ Excel·lent! Totes ' + total + ' respostes correctes.';
+  } else {
+    res.style.cssText = 'color:var(--wrong);background:#FFF0EC;padding:8px 12px;border-radius:6px;';
+    res.textContent = ok + ' de ' + total + ' correctes. Revisa quines plaques formen serralades, quines fosses oceàniques i quines falles transformants.';
+  }
+}
+
+// Selecció territori
+function selectTerritory(name) {
+  document.querySelectorAll('.territory-card').forEach(el => el.classList.remove('selected'));
+  const el = document.getElementById('terr-' + name);
+  if (el) el.classList.add('selected');
+  document.getElementById('f_territori').value = name;
+}
+
+window.addEventListener('load', updateProgress);
+</script>
+
+<!-- PDF GENERATION -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+function generatePDF() {
+  const btn = document.getElementById('pdfBtn');
+  btn.textContent = '⏳ Generant PDF...';
+  btn.disabled = true;
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const W = 210, M = 18, maxW = W - M * 2;
+  let y = 0;
+
+  function newPage() { doc.addPage(); y = 22; }
+  function checkY(h) { if (y + h > 278) newPage(); }
+
+  function pageHeader(title, sub) {
+    doc.setFillColor(26, 26, 20);
+    doc.rect(0, 0, W, 26, 'F');
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(245, 240, 232);
+    doc.text(title, M, 11);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(160, 152, 136);
+    doc.text(sub, M, 19);
+    doc.setTextColor(26, 26, 20);
+    y = 32;
+  }
+
+  function blockHeader(num, title) {
+    checkY(14);
+    doc.setFillColor(196, 67, 10);
+    doc.rect(M, y, maxW, 9, 'F');
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(255, 255, 255);
+    doc.text(num + '  ' + title.toUpperCase(), M + 3, y + 6);
+    doc.setTextColor(26, 26, 20);
+    y += 13;
+  }
+
+  function fieldLabel(t) {
+    checkY(7);
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); doc.setTextColor(107, 104, 96);
+    doc.text(t.toUpperCase(), M, y); y += 4.5;
+  }
+
+  function fieldBox(val, minLines) {
+    const lines = val ? doc.splitTextToSize(val.trim(), maxW - 6) : [];
+    const h = Math.max(minLines * 6.5, lines.length * 5.5 + 5, 14);
+    checkY(h + 3);
+    doc.setDrawColor(217, 211, 197); doc.setLineWidth(0.25); doc.setFillColor(253, 250, 244);
+    doc.rect(M, y, maxW, h, 'FD');
+    if (lines.length) {
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(26, 26, 20);
+      doc.text(lines, M + 3, y + 5);
+    }
+    y += h + 4;
+  }
+
+  function twoCol(l1, v1, l2, v2) {
+    checkY(22);
+    const cw = (maxW - 5) / 2;
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); doc.setTextColor(107, 104, 96);
+    doc.text(l1.toUpperCase(), M, y); doc.text(l2.toUpperCase(), M + cw + 5, y); y += 4.5;
+    doc.setDrawColor(217, 211, 197); doc.setFillColor(253, 250, 244);
+    doc.rect(M, y, cw, 11, 'FD'); doc.rect(M + cw + 5, y, cw, 11, 'FD');
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(26, 26, 20);
+    if (v1) doc.text(doc.splitTextToSize(v1.trim(), cw - 4), M + 3, y + 4.5);
+    if (v2) doc.text(doc.splitTextToSize(v2.trim(), cw - 4), M + cw + 8, y + 4.5);
+    y += 15;
+  }
+
+  // Recollida de dades
+  const g = id => (document.getElementById(id)?.value || '').trim();
+  const territori = g('f_territori'); const membres = g('f_membres'); const curs = g('f_curs');
+  // Puntuació preguntes
+  const notaVal = getGradedNote10();
+  const ptsVal = getGradedScore();
+  const doneVal = GRADED_QS.filter(q => answered[q]?.done).length;
+  const notaStr = notaVal.toFixed(1).replace('.',',') + ' / 10';
+  const detailStr = ptsVal.toFixed(1).replace('.',',') + ' punts de ' + TOTAL_GRADED + ' · ' + doneVal + ' de ' + TOTAL_GRADED + ' preguntes contestades';
+  const plaques = g('f_plaques'); const limit = g('f_limit');
+  const context = g('f_context'); const phet = g('f_phet');
+  const riscos = g('f_riscos'); const exemple = g('f_exemple'); const usgs = g('f_usgs');
+  const prevencio = g('f_prevencio'); const millora = g('f_millora');
+  const nivell = g('f_nivell'); const comparacio = g('f_comparacio');
+  const justificacio = g('f_justificacio'); const conclusio = g('f_conclusio');
+
+  // ── PÀGINA 1 ──
+  pageHeader('Informe del grup — ' + (territori || 'Territori no especificat'), 'Tectònica de Plaques i Riscos Geològics · Biologia i Geologia 4t ESO · ' + new Date().toLocaleDateString('ca-ES'));
+  twoCol('Membres del grup', membres, 'Curs i grup', curs);
+  twoCol('Territori escollit', territori, 'Tipus de límit de placa', limit);
+
+  blockHeader('1', 'Context tectònic del territori');
+  fieldLabel('Plaques tectòniques que afecten el territori');
+  fieldBox(plaques, 1);
+  fieldLabel('Per quina raó la posició sobre les plaques determina l\'activitat geològica');
+  fieldBox(context, 3);
+  fieldLabel('Observació al simulador PhET: configuració i resultat');
+  fieldBox(phet, 2);
+
+  blockHeader('2', 'Riscos geològics del territori');
+  fieldLabel('Tipus de riscos i motiu tectònic de cadascun');
+  fieldBox(riscos, 3);
+  fieldLabel('Exemple real: nom, any, magnitud/VEI, conseqüències');
+  fieldBox(exemple, 2);
+  fieldLabel('Observació al mapa USGS del territori');
+  fieldBox(usgs, 2);
+
+  blockHeader('3', 'Prevenció i gestió del risc');
+  fieldLabel('Mesures de prevenció o mitigació actuals');
+  fieldBox(prevencio, 3);
+  fieldLabel('Proposta de millora justificada');
+  fieldBox(millora, 2);
+
+  blockHeader('4', 'Valoració final del risc geològic');
+  twoCol('Nivell de risc global', nivell, 'Comparació amb un altre territori', comparacio);
+  fieldLabel('Justificació de la valoració');
+  fieldBox(justificacio, 3);
+  fieldLabel('Conclusió del grup');
+  fieldBox(conclusio, 2);
+
+  // ── PUNTUACIÓ PREGUNTES ──
+  checkY(30);
+  doc.setFillColor(26, 26, 20);
+  doc.rect(M, y, maxW, 22, 'F');
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(93, 202, 165);
+  doc.text(notaStr, M + 3, y + 9);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(160, 152, 136);
+  doc.text('Nota preguntes (tots els blocs, sobre 15 → /10)', M + 3, y + 16);
+  doc.setFontSize(7.5);
+  doc.text(detailStr, W - M - 3, y + 9, { align: 'right' });
+  doc.text('15 preguntes | 1pt (1r intent) | 0,5pt (2n intent) | 0pt (errònia/no contestada) | Nota = (pts/15) x 10', W - M - 3, y + 16, { align: 'right' });
+  doc.setTextColor(26, 26, 20);
+  y += 26;
+
+  // ── PEUS DE PÀGINA ──
+  const np = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= np; i++) {
+    doc.setPage(i);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(160, 152, 136);
+    doc.text('Biologia i Geologia 4t ESO · Tectònica de Plaques i Riscos Geològics', M, 291);
+    doc.text('Pàgina ' + i + ' de ' + np, W - M, 291, { align: 'right' });
+  }
+
+  const nom = (territori || 'informe').replace(/\s+/g, '-').toLowerCase().replace(/[àáâ]/g,'a').replace(/[èéê]/g,'e').replace(/[ìíî]/g,'i').replace(/[òóô]/g,'o').replace(/[ùúû]/g,'u');
+  doc.save('informe_' + nom + '.pdf');
+
+  btn.textContent = '✅ PDF generat!';
+  btn.disabled = false;
+  setTimeout(() => { btn.textContent = '📄 Generar PDF de l\'informe'; }, 5000);
+}
+</script>
+</body>
+</html>
