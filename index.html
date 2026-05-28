@@ -227,7 +227,7 @@
 
 <div id="restoreBanner" style="display:none;background:linear-gradient(90deg,#0D2A1A,#1A4A2A);color:#A0D4B8;padding:0.65rem 2rem;font-size:13px;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-bottom:1px solid rgba(126,203,161,0.15);">
   <span>🔄 S'han recuperat les respostes de la sessió anterior. <span class="restore-time" style="opacity:0.75;"></span></span>
-  <button onclick="openResetModal()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#A0D4B8;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:12px;font-family:inherit;">Esborrar i tornar a començar</button>
+  <button onclick="openResetModal()" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#A0D4B8;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:12px;font-family:inherit;" onclick="openResetModal()">Esborrar i tornar a començar</button>
 </div>
 
 <nav class="nav-pills" id="mainNav">
@@ -1023,10 +1023,7 @@ function checkQ(qid, btn, isCorrect) {
       fb.className = 'q-feedback show fail';
       fb.textContent = getFeedback(qid, idx) + (isGraded ? ' — 0 punts.' : '');
     } else {
-      // Primer error: desactiva TOTS els incorrectes i deixa actiu NOMÉS el correcte
-      allBtns.forEach((b, i) => {
-        if (i !== state.correctIdx) b.disabled = true;
-      });
+      // Primer error: només desactiva el botó premut, la resta segueixen actives
       fb.className = 'q-feedback show fail';
       fb.textContent = getFeedback(qid, idx) + (isGraded ? ' ⚠️ Torna-ho a intentar (últim intent).' : ' ⚠️ Torna-ho a intentar.');
     }
@@ -1193,10 +1190,12 @@ function loadState() {
             }
           }
         } else if (data.tries === 1 && (data.wrongIdxs || []).length > 0) {
-          // Primer error: desactiva tots excepte el correcte, marca incorrectes en vermell
-          allBtns.forEach((b, i) => { if (i !== ci) b.disabled = true; });
+          // Primer error: desactiva només els botons ja premuts, la resta actives
           (data.wrongIdxs || []).forEach(wi => {
-            if (allBtns[wi]) allBtns[wi].classList.add('wrong');
+            if (allBtns[wi]) {
+              allBtns[wi].disabled = true;
+              allBtns[wi].classList.add('wrong');
+            }
           });
           if (fb) {
             fb.className = 'q-feedback show fail';
@@ -1351,7 +1350,7 @@ function f(t,e){var r=t[0],n=t[1],i=t[2],a=t[3];r=p(r,n,i,a,e[0],7,-680876936),a
     <div id="resetError" style="display:none;font-size:0.82rem;color:#C4430A;margin-bottom:0.75rem;">Contrasenya incorrecta.</div>
     <div style="display:flex;gap:8px;justify-content:flex-end;">
       <button onclick="closeResetModal()" style="background:transparent;border:1.5px solid #D9D3C5;border-radius:6px;padding:8px 16px;cursor:pointer;font-family:inherit;font-size:13px;color:#6B6860;">Cancel·lar</button>
-      <button onclick="confirmReset()" style="background:#C4430A;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;font-family:inherit;font-size:13px;color:white;font-weight:500;">Esborrar tot</button>
+      <button onclick="confirmReset()" style="background:#C4430A;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;font-family:inherit;font-size:13px;color:white;font-weight:500;" onclick="confirmReset()">Esborrar tot</button>
     </div>
   </div>
 </div>
@@ -1370,7 +1369,7 @@ function f(t,e){var r=t[0],n=t[1],i=t[2],a=t[3];r=p(r,n,i,a,e[0],7,-680876936),a
     <div id="resetError" style="display:none;font-size:0.82rem;color:#C4430A;margin-bottom:0.75rem;">Contrasenya incorrecta.</div>
     <div style="display:flex;gap:8px;justify-content:flex-end;">
       <button onclick="closeResetModal()" style="background:transparent;border:1.5px solid #D9D3C5;border-radius:6px;padding:8px 16px;cursor:pointer;font-family:inherit;font-size:13px;color:#6B6860;">Cancel·lar</button>
-      <button onclick="confirmReset()" style="background:#C4430A;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;font-family:inherit;font-size:13px;color:white;font-weight:500;">Esborrar tot</button>
+      <button onclick="confirmReset()" style="background:#C4430A;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;font-family:inherit;font-size:13px;color:white;font-weight:500;" onclick="confirmReset()">Esborrar tot</button>
     </div>
   </div>
 </div>
@@ -1389,7 +1388,7 @@ function f(t,e){var r=t[0],n=t[1],i=t[2],a=t[3];r=p(r,n,i,a,e[0],7,-680876936),a
     <div id="resetError" style="display:none;font-size:0.82rem;color:#C4430A;margin-bottom:0.75rem;">Contrasenya incorrecta.</div>
     <div style="display:flex;gap:8px;justify-content:flex-end;">
       <button onclick="closeResetModal()" style="background:transparent;border:1.5px solid #D9D3C5;border-radius:6px;padding:8px 16px;cursor:pointer;font-family:inherit;font-size:13px;color:#6B6860;">Cancel·lar</button>
-      <button onclick="confirmReset()" style="background:#C4430A;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;font-family:inherit;font-size:13px;color:white;font-weight:500;">Esborrar tot</button>
+      <button onclick="confirmReset()" style="background:#C4430A;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;font-family:inherit;font-size:13px;color:white;font-weight:500;" onclick="confirmReset()">Esborrar tot</button>
     </div>
   </div>
 </div>
@@ -1871,29 +1870,49 @@ function generatePDF() {
     <div id="resetError" style="display:none;font-size:0.82rem;color:#C4430A;margin-bottom:0.75rem;">Contrasenya incorrecta.</div>
     <div style="display:flex;gap:8px;justify-content:flex-end;">
       <button onclick="closeResetModal()" style="background:transparent;border:1.5px solid #D9D3C5;border-radius:6px;padding:8px 16px;cursor:pointer;font-family:inherit;font-size:13px;color:#6B6860;">Cancel·lar</button>
-      <button onclick="confirmReset()" style="background:#C4430A;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;font-family:inherit;font-size:13px;color:white;font-weight:500;">Esborrar tot</button>
+      <button onclick="confirmReset()" style="background:#C4430A;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;font-family:inherit;font-size:13px;color:white;font-weight:500;" onclick="confirmReset()">Esborrar tot</button>
     </div>
   </div>
 </div>
 
 
 
+<!-- Modal contrasenya reset -->
+<div id="resetModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:9999;align-items:center;justify-content:center;">
+  <div style="background:white;border-radius:12px;padding:2rem;max-width:340px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.35);">
+    <div style="font-size:1rem;font-weight:600;color:#1A1A14;margin-bottom:0.4rem;">Esborrar respostes</div>
+    <div style="font-size:0.85rem;color:#6B6860;margin-bottom:1.25rem;">Introdueix la contrasenya del professor/a per continuar.</div>
+    <input id="resetPwd" type="password" placeholder="Contrasenya" autocomplete="off"
+      style="width:100%;border:1.5px solid #D9D3C5;border-radius:6px;padding:9px 12px;font-size:0.95rem;font-family:inherit;margin-bottom:0.75rem;outline:none;"
+      onkeydown="if(event.key==='Enter')confirmReset()"/>
+    <div id="resetError" style="display:none;font-size:0.82rem;color:#C4430A;margin-bottom:0.75rem;">Contrasenya incorrecta.</div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;">
+      <button onclick="closeResetModal()" style="background:transparent;border:1.5px solid #D9D3C5;border-radius:6px;padding:8px 16px;cursor:pointer;font-family:inherit;font-size:13px;color:#6B6860;">Cancel·lar</button>
+      <button onclick="confirmReset()" style="background:#C4430A;border:none;border-radius:6px;padding:8px 16px;cursor:pointer;font-family:inherit;font-size:13px;color:white;font-weight:500;" onclick="confirmReset()">Esborrar tot</button>
+    </div>
+  </div>
+</div>
 <script>
 function openResetModal() {
-  const modal = document.getElementById('resetModal');
-  modal.style.display = 'flex';
+  document.getElementById('resetModal').style.display = 'flex';
   document.getElementById('resetPwd').value = '';
   document.getElementById('resetError').style.display = 'none';
-  setTimeout(() => document.getElementById('resetPwd').focus(), 50);
+  setTimeout(function(){ document.getElementById('resetPwd').focus(); }, 50);
 }
 function closeResetModal() {
   document.getElementById('resetModal').style.display = 'none';
 }
 function confirmReset() {
-  const pwd = document.getElementById('resetPwd').value;
+  var pwd = document.getElementById('resetPwd').value;
   if (pwd === 'geo2025') {
-    localStorage.removeItem(STORAGE_KEY);
-    location.reload();
+    // Esborra totes les claus del localStorage que puguin tenir dades del dossier
+    try {
+      localStorage.removeItem('tectonica_dossier_v1');
+      // Per si la clau ha canviat, esborra tot el localStorage d'aquest domini
+      localStorage.clear();
+    } catch(e) {}
+    // Força recàrrega sense caché
+    window.location.replace(window.location.href.split('?')[0] + '?reset=' + Date.now());
   } else {
     document.getElementById('resetError').style.display = 'block';
     document.getElementById('resetPwd').value = '';
@@ -1901,8 +1920,8 @@ function confirmReset() {
   }
 }
 document.addEventListener('click', function(e) {
-  const modal = document.getElementById('resetModal');
-  if (e.target === modal) closeResetModal();
+  var modal = document.getElementById('resetModal');
+  if (modal && e.target === modal) closeResetModal();
 });
 </script>
 </body>
