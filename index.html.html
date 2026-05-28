@@ -1014,14 +1014,18 @@ function checkQ(qid, btn, isCorrect) {
     btn.classList.add('wrong');
     btn.disabled = true;
     if (state.tries >= 2) {
+      // Segon error: bloqueig total i mostra la correcta
       state.done = true;
       state.points = 0;
       allBtns.forEach(b => b.disabled = true);
-      // Marca NOMÉS el correcte en verd
       allBtns[state.correctIdx]?.classList.add('correct');
       fb.className = 'q-feedback show fail';
       fb.textContent = getFeedback(qid, idx) + (isGraded ? ' — 0 punts.' : '');
     } else {
+      // Primer error: desactiva TOTS els incorrectes i deixa actiu NOMÉS el correcte
+      allBtns.forEach((b, i) => {
+        if (i !== state.correctIdx) b.disabled = true;
+      });
       fb.className = 'q-feedback show fail';
       fb.textContent = getFeedback(qid, idx) + (isGraded ? ' ⚠️ Torna-ho a intentar (últim intent).' : ' ⚠️ Torna-ho a intentar.');
     }
@@ -1162,35 +1166,40 @@ function loadState() {
     // Respostes de les preguntes
     if (state.answered) {
       Object.assign(answered, state.answered);
-      // Restaura l'estat visual de cada pregunta
       Object.entries(state.answered).forEach(([qid, data]) => {
-        if (!data.done) return;
         const qDiv = document.getElementById(qid);
         if (!qDiv) return;
         const allBtns = qDiv.querySelectorAll('.q-btn');
         const fb = document.getElementById(qid + '-fb');
-
-        // Bloqueja tots els botons
-        allBtns.forEach(b => b.disabled = true);
-
-        // Marca el botó correcte en verd (índex guardat)
         const ci = (data.correctIdx >= 0) ? data.correctIdx : getCorrectIdx(allBtns);
-        if (allBtns[ci]) allBtns[ci].classList.add('correct');
+        const isGraded = GRADED_QS.includes(qid);
 
-        // Marca els botons incorrectes premuts en vermell
-        (data.wrongIdxs || []).forEach(wi => {
-          if (allBtns[wi]) allBtns[wi].classList.add('wrong');
-        });
-
-        // Feedback
-        if (fb) {
-          if (data.points > 0) {
-            fb.className = 'q-feedback show ok';
-            const pts = data.points === 0.5 ? ' (0,5 punts — segon intent)' : '';
-            fb.textContent = '✅ Resposta recuperada de la sessió anterior' + pts;
-          } else {
+        if (data.done) {
+          // Pregunta acabada: bloqueja tots, marca correcta i incorrectes
+          allBtns.forEach(b => b.disabled = true);
+          if (allBtns[ci]) allBtns[ci].classList.add('correct');
+          (data.wrongIdxs || []).forEach(wi => {
+            if (allBtns[wi]) allBtns[wi].classList.add('wrong');
+          });
+          if (fb) {
+            if (data.points > 0) {
+              fb.className = 'q-feedback show ok';
+              const pts = data.points === 0.5 ? ' (0,5 punts — segon intent)' : '';
+              fb.textContent = '✅ Resposta recuperada de la sessió anterior' + pts;
+            } else {
+              fb.className = 'q-feedback show fail';
+              fb.textContent = '❌ Resposta recuperada — 0 punts';
+            }
+          }
+        } else if (data.tries === 1 && (data.wrongIdxs || []).length > 0) {
+          // Primer error: desactiva tots excepte el correcte, marca incorrectes en vermell
+          allBtns.forEach((b, i) => { if (i !== ci) b.disabled = true; });
+          (data.wrongIdxs || []).forEach(wi => {
+            if (allBtns[wi]) allBtns[wi].classList.add('wrong');
+          });
+          if (fb) {
             fb.className = 'q-feedback show fail';
-            fb.textContent = '❌ Resposta recuperada — 0 punts';
+            fb.textContent = 'Resposta recuperada — ' + (isGraded ? '⚠️ Torna-ho a intentar (últim intent).' : '⚠️ Torna-ho a intentar.');
           }
         }
       });
